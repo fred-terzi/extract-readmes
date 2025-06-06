@@ -95,7 +95,7 @@
     "outline": "1",
     "title": "extract-readmes core logic",
     "description": "The extract-readmes core will be exposed as an API that will be used by other tool and a CLI.",
-    "acceptance": "ACCEPTANCE",
+    "acceptance": "100% test coverage of all acceptance criteria in section.",
     "readme": "exclude",
     "status": "PLANNED"
   },
@@ -105,7 +105,7 @@
     "outline": "1.1",
     "title": "Find All READMEs",
     "description": "There will be logic to find all README.md files in the codebase. This function will be used not only to extract copies, but also to generate a list of all READMEs in the codebase.\n\nThis will be used for the actual extraction but also a dry run to see what would be extracted as well as created a .xrmignore file with all the files so that the user can choose which to include rather than having to type them all out.",
-    "acceptance": "ACCEPTANCE",
+    "acceptance": "- The function must recursively search the entire codebase, starting from a specified root directory, and return a list of all files named exactly `README.md`, regardless of case sensitivity (e.g., `readme.md`, `ReadMe.md` must also be found).\n- The function must not return any `README.md` files located in directories or subdirectories that match any pattern in a `.xrmignore` file, if present at the root.\n- The function must handle and skip symbolic links to avoid infinite loops or duplicate results.\n- The function must not include `README.md` files from hidden directories (those starting with a dot, e.g., `.git/`), unless explicitly allowed by a parameter.\n- The function must return absolute or root-relative paths for each found `README.md` file.\n- If no `README.md` files are found, the function must return an empty list.\n- If the root directory does not exist or is not accessible, the function must throw an appropriate error.\n- The function must complete successfully and return correct results even if the codebase contains thousands of directories and files.\n- The function must be covered by automated tests for all the above scenarios, including:\n  - No README files present\n  - Multiple README files at various depths\n  - README files in ignored directories\n  - README files in hidden directories\n  - Case-insensitive file matching\n  - Symbolic link handling\n  - Large directory trees\n  - Invalid or missing root directory",
     "readme": "@TODO: Create readme section after the implementation is finalized.",
     "status": "PLANNED"
   },
@@ -115,8 +115,8 @@
     "outline": "1.2",
     "title": "READMEs/",
     "description": "The READMEs/ directory will be created to store all the extracted README.md files. Each file will be named based on the folder it was extracted from, with .RM.md appended to the name.\n\n**Example:**\n```\nansi-colors.RM.md\n```",
-    "acceptance": "ACCEPTANCE",
-    "readme": "README",
+    "acceptance": "- The tool must create a directory named `READMEs` at the root of the project if it does not already exist.\n- For each extracted `README.md` file, a new file must be created in the `READMEs/` directory.\n- The new file's name must be the name of the folder from which the `README.md` was extracted, with `.RM.md` appended (e.g., extracting from `./ansi-colors/README.md` creates `READMEs/ansi-colors.RM.md`).\n- If multiple folders have the same name at different paths, the tool must ensure unique output filenames (e.g., by prefixing with parent directories or using a deterministic scheme).\n- The tool must not overwrite existing files in `READMEs/` unless explicitly allowed by a parameter.\n- If the `READMEs/` directory is not writable, the tool must throw an appropriate error.\n- If a folder does not contain a `README.md`, no file should be created for that folder.\n- The tool must handle edge cases such as:\n  - Folder names with special characters, spaces, or unicode.\n  - Deeply nested folders.\n  - Very large numbers of README files.\n  - Filesystem case sensitivity (output filenames must be unique even on case-insensitive filesystems).\n- All behaviors must be covered by automated tests, including:\n  - Creation of the `READMEs/` directory.\n  - Naming and uniqueness of output files.\n  - Handling of write errors and permission issues.\n  - Handling of special characters and edge cases in folder names.",
+    "readme": "@TODO: Create readme section after the implementation is finalized.",
     "status": "PLANNED"
   },
   {
@@ -125,8 +125,8 @@
     "outline": "1.3",
     "title": ".xrmignore",
     "description": ".xrmignore will be used to ignore certain folders from being processed by the extract-readmes tool. It will follow the same syntax as .gitignore.",
-    "acceptance": "ACCEPTANCE",
-    "readme": "README",
+    "acceptance": "- The `.xrmignore` file must be read from the root of the project if present.\n- The syntax of `.xrmignore` must match that of `.gitignore`, supporting glob patterns, negation (`!`), comments, and blank lines.\n- Any directory or file path matching a pattern in `.xrmignore` must be excluded from all extract-readmes operations.\n- If `.xrmignore` is malformed or contains invalid patterns, the tool must fail with a clear error message.\n- If `.xrmignore` is not present, no paths are excluded by default.\n- The tool must support reloading `.xrmignore` if it is changed during a dry run or interactive session.\n- The tool must handle edge cases, including:\n  - Patterns that match hidden directories or files.\n  - Patterns that use wildcards, recursive globs (`**`), or character ranges.\n  - Negated patterns that re-include previously excluded paths.\n  - Large `.xrmignore` files with hundreds of patterns.\n  - Unicode and special characters in patterns and paths.\n- All behaviors must be covered by automated tests, including:\n  - Exclusion and inclusion of files/folders based on patterns.\n  - Handling of invalid or missing `.xrmignore`.\n  - Pattern precedence and negation.\n  - Performance with large ignore files.",
+    "readme": "@TODO: Create readme section after the implementation is finalized.",
     "status": "PLANNED"
   },
   {
@@ -136,7 +136,7 @@
     "title": "extract-readmes CLI",
     "description": "The extract-readmes CLI will be called xrm and will provide a simple interface for users to extract README.md files from their codebase. It will use the core logic from the extract-readmes module and provide options for dry runs, creating ignore files.",
     "acceptance": "ACCEPTANCE",
-    "readme": "README",
+    "readme": "@TODO: Create readme section after the implementation is finalized.",
     "status": "PLANNED"
   },
   {
@@ -146,7 +146,7 @@
     "title": "--dry-run",
     "description": "The --dry-run option will allow users to see what README.md files would be extracted without actually performing the extraction. This is useful for verifying which files will be processed and for generating a .xrmignore file.",
     "acceptance": "ACCEPTANCE",
-    "readme": "README",
+    "readme": "@TODO: Create readme section after the implementation is finalized.",
     "status": "PLANNED"
   },
   {
@@ -155,6 +155,26 @@
     "outline": "2.2",
     "title": "--create-ignore",
     "description": "This will create an .xrmignore file with all the README.md files that would be extracted. This allows users to easily manage which files they want to include or exclude from the extraction process without having to manually type them out.",
+    "acceptance": "ACCEPTANCE",
+    "readme": "@TODO: Create readme section after the implementation is finalized.",
+    "status": "PLANNED"
+  },
+  {
+    "reqt_ID": "2025-06-06T01:49:32.363Z-eca1ca9e",
+    "hier": 1,
+    "outline": "2.3",
+    "title": "--help, -h",
+    "description": "DESCRIPTION",
+    "acceptance": "ACCEPTANCE",
+    "readme": "README",
+    "status": "PLANNED"
+  },
+  {
+    "reqt_ID": "2025-06-06T01:49:38.393Z-a4719bf5",
+    "hier": 1,
+    "outline": "2.4",
+    "title": "--version, -v",
+    "description": "DESCRIPTION",
     "acceptance": "ACCEPTANCE",
     "readme": "README",
     "status": "PLANNED"

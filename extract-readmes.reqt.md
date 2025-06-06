@@ -419,7 +419,7 @@ ACCEPTANCE
 <!-- reqt_README_field-->
 **README:**
 
-README
+@TODO: Create readme section after the implementation is finalized.
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
@@ -445,7 +445,7 @@ ACCEPTANCE
 <!-- reqt_README_field-->
 **README:**
 
-README
+@TODO: Create readme section after the implementation is finalized.
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
@@ -471,8 +471,60 @@ ACCEPTANCE
 <!-- reqt_README_field-->
 **README:**
 
-README
+@TODO: Create readme section after the implementation is finalized.
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T01:32:01.580Z-91a32361 --end-->
+
+<!-- reqt_id: 2025-06-06T01:49:32.363Z-eca1ca9e --start-->
+
+### 2.3: --help, -h 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+DESCRIPTION
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+ACCEPTANCE
+
+<!-- reqt_README_field-->
+**README:**
+
+@TODO: Create readme section after the implementation is finalized.
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T01:49:32.363Z-eca1ca9e --end-->
+
+<!-- reqt_id: 2025-06-06T01:49:38.393Z-a4719bf5 --start-->
+
+### 2.4: --version, -v 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+DESCRIPTION
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+ACCEPTANCE
+
+<!-- reqt_README_field-->
+**README:**
+
+@TODO: Create readme section after the implementation is finalized.
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T01:49:38.393Z-a4719bf5 --end-->
