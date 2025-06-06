@@ -107,7 +107,7 @@
     "description": "All error handling must be done using try/catch blocks. This allows for better error handling and debugging. Must be done gracefully and not crash the process.\nUse green checks for success and red crosses for errors in the console output and exclamation marks for warnings.",
     "acceptance": "ACCEPTANCE",
     "readme": "exclude",
-    "status": "PLANNED"
+    "status": "DESIGN"
   },
   {
     "reqt_ID": "2025-06-06T02:00:36.497Z-80953956",
@@ -117,7 +117,7 @@
     "description": "All exported functions must be async functions. This allows for better performance and scalability.",
     "acceptance": "All exported functions must be async functions. This allows for better performance and scalability.",
     "readme": "README",
-    "status": "PLANNED"
+    "status": "DESIGN"
   },
   {
     "reqt_ID": "2025-06-06T02:01:02.354Z-f66db433",
@@ -127,7 +127,7 @@
     "description": "Libraries to use in the project:\n- `commander`: For building the CLI interface.\n- `fs-extra`: For file system operations (copying files, reading directories, etc.).\n- `fast-glob`: For matching files and directories using glob patterns.\n- `enquirer`: For interactive prompts and user input.",
     "acceptance": "No other libraries should be used in the project. All functionality should be implemented using the libraries listed above.",
     "readme": "exclude",
-    "status": "PLANNED"
+    "status": "DESIGN"
   },
   {
     "reqt_ID": "2025-06-06T01:25:15.160Z-6d9d7e6a",

@@ -295,7 +295,7 @@ exclude
 #### 0.2.6: Error Handling 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+DESIGN
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -306,7 +306,19 @@ Use green checks for success and red crosses for errors in the console output an
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-ACCEPTANCE
+- All error handling in the codebase must use try/catch blocks for asynchronous and synchronous operations that may throw.
+- The process must not crash on any handled error; instead, errors must be reported gracefully to the user.
+- On successful operations, the CLI and core logic must display a green check mark (✔) in the console output.
+- On errors, a red cross (✖) must be shown in the console output, along with a clear, user-friendly error message.
+- On warnings (e.g., non-fatal issues, skipped files), an exclamation mark (!) must be shown in the console output, with a clear warning message.
+- All error, warning, and success messages must be tested for correct formatting and appearance in the console.
+- Automated tests must cover scenarios including:
+  - Errors thrown by file system operations (e.g., permission denied, file not found)
+  - Invalid or malformed .xrmignore files
+  - Unwritable output directories
+  - Unexpected exceptions in core logic or CLI
+  - Correct display of success, error, and warning symbols in output
+- No unhandled promise rejections or uncaught exceptions should occur during normal or error scenarios.
 
 <!-- reqt_README_field-->
 **README:**
@@ -322,7 +334,7 @@ exclude
 #### 0.2.7: Aysnc for all functions 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+DESIGN
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -348,7 +360,7 @@ README
 #### 0.2.8: Libraries to Use 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+DESIGN
 
  <!-- reqt_Desc_field-->
 **Description**
