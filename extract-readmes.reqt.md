@@ -138,10 +138,11 @@ exclude
 #### 0.2.1: Directory Structure 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+DESIGN
 
  <!-- reqt_Desc_field-->
 **Description**
+
 ```
 extract-readmes/
 ├── src/
@@ -167,6 +168,7 @@ extract-readmes/
 ├── LICENSE
 └── README.md                 # Project documentation
 ```
+
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
@@ -181,9 +183,35 @@ README
 ---
 <!-- reqt_id: 2025-06-06T01:54:39.872Z-ac10d578 --end-->
 
+<!-- reqt_id: 2025-06-06T00:21:45.491Z-7e3b1c91 --start-->
+
+#### 0.2.2: Typescript with ESM 
+<!-- reqt_status_field-->
+**Status:**
+DONE
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+Typescript with ESM (ECMAScript Modules) is used for the project. This allows for modern JavaScript features and better module management.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+No CommonJS modules should be used in the project. All modules should be ESM compatible.
+
+<!-- reqt_README_field-->
+**README:**
+
+exclude
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T00:21:45.491Z-7e3b1c91 --end-->
+
 <!-- reqt_id: 2025-06-06T00:21:56.011Z-c52a4947 --start-->
 
-#### 0.2.2: Vitest with c8 coverage 
+#### 0.2.3: Vitest with c8 coverage 
 <!-- reqt_status_field-->
 **Status:**
 DONE
@@ -211,7 +239,7 @@ exclude
 
 <!-- reqt_id: 2025-06-06T00:22:05.729Z-eeb7543f --start-->
 
-#### 0.2.3: ts-node 
+#### 0.2.4: ts-node 
 <!-- reqt_status_field-->
 **Status:**
 DONE
@@ -237,7 +265,7 @@ exclude
 
 <!-- reqt_id: 2025-06-06T00:23:31.341Z-22d6e3d1 --start-->
 
-#### 0.2.4: npm scripts 
+#### 0.2.5: npm scripts 
 <!-- reqt_status_field-->
 **Status:**
 DONE
@@ -262,22 +290,23 @@ exclude
 ---
 <!-- reqt_id: 2025-06-06T00:23:31.341Z-22d6e3d1 --end-->
 
-<!-- reqt_id: 2025-06-06T00:21:45.491Z-7e3b1c91 --start-->
+<!-- reqt_id: 2025-06-06T02:00:26.387Z-dbe3191c --start-->
 
-#### 0.2.5: Typescript with ESM 
+#### 0.2.6: Error Handling 
 <!-- reqt_status_field-->
 **Status:**
-DONE
+PLANNED
 
  <!-- reqt_Desc_field-->
 **Description**
 
-Typescript with ESM (ECMAScript Modules) is used for the project. This allows for modern JavaScript features and better module management.
+All error handling must be done using try/catch blocks. This allows for better error handling and debugging. Must be done gracefully and not crash the process.
+Use green checks for success and red crosses for errors in the console output and exclamation marks for warnings.
 
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-No CommonJS modules should be used in the project. All modules should be ESM compatible.
+ACCEPTANCE
 
 <!-- reqt_README_field-->
 **README:**
@@ -286,7 +315,63 @@ exclude
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
-<!-- reqt_id: 2025-06-06T00:21:45.491Z-7e3b1c91 --end-->
+<!-- reqt_id: 2025-06-06T02:00:26.387Z-dbe3191c --end-->
+
+<!-- reqt_id: 2025-06-06T02:00:36.497Z-80953956 --start-->
+
+#### 0.2.7: Aysnc for all functions 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+All exported functions must be async functions. This allows for better performance and scalability.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+All exported functions must be async functions. This allows for better performance and scalability.
+
+<!-- reqt_README_field-->
+**README:**
+
+README
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T02:00:36.497Z-80953956 --end-->
+
+<!-- reqt_id: 2025-06-06T02:01:02.354Z-f66db433 --start-->
+
+#### 0.2.8: Libraries to Use 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+Libraries to use in the project:
+- `commander`: For building the CLI interface.
+- `fs-extra`: For file system operations (copying files, reading directories, etc.).
+- `fast-glob`: For matching files and directories using glob patterns.
+- `enquirer`: For interactive prompts and user input.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+No other libraries should be used in the project. All functionality should be implemented using the libraries listed above.
+
+<!-- reqt_README_field-->
+**README:**
+
+exclude
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T02:01:02.354Z-f66db433 --end-->
 
 <!-- reqt_id: 2025-06-06T01:25:15.160Z-6d9d7e6a --start-->
 
