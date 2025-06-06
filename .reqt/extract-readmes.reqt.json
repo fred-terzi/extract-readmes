@@ -105,7 +105,7 @@
     "outline": "0.2.6",
     "title": "Error Handling",
     "description": "All error handling must be done using try/catch blocks. This allows for better error handling and debugging. Must be done gracefully and not crash the process.\nUse green checks for success and red crosses for errors in the console output and exclamation marks for warnings.",
-    "acceptance": "ACCEPTANCE",
+    "acceptance": "- All error handling in the codebase must use try/catch blocks for asynchronous and synchronous operations that may throw.\n- The process must not crash on any handled error; instead, errors must be reported gracefully to the user.\n- On successful operations, the CLI and core logic must display a green check mark (✔) in the console output.\n- On errors, a red cross (✖) must be shown in the console output, along with a clear, user-friendly error message.\n- On warnings (e.g., non-fatal issues, skipped files), an exclamation mark (!) must be shown in the console output, with a clear warning message.\n- All error, warning, and success messages must be tested for correct formatting and appearance in the console.\n- Automated tests must cover scenarios including:\n  - Errors thrown by file system operations (e.g., permission denied, file not found)\n  - Invalid or malformed .xrmignore files\n  - Unwritable output directories\n  - Unexpected exceptions in core logic or CLI\n  - Correct display of success, error, and warning symbols in output\n- No unhandled promise rejections or uncaught exceptions should occur during normal or error scenarios.",
     "readme": "exclude",
     "status": "DESIGN"
   },
@@ -128,6 +128,16 @@
     "acceptance": "No other libraries should be used in the project. All functionality should be implemented using the libraries listed above.",
     "readme": "exclude",
     "status": "DESIGN"
+  },
+  {
+    "reqt_ID": "2025-06-06T02:09:43.996Z-8f7a360b",
+    "hier": 2,
+    "outline": "0.2.9",
+    "title": "ESLint and Prettier",
+    "description": "DESCRIPTION",
+    "acceptance": "ACCEPTANCE",
+    "readme": "README",
+    "status": "PLANNED"
   },
   {
     "reqt_ID": "2025-06-06T01:25:15.160Z-6d9d7e6a",
