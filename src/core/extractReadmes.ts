@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import findReadmes from './findReadmes';
+import findReadmes from './findReadmes.js';
 
 // Logic to extract/copy README files
 
