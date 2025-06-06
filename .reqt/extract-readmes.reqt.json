@@ -135,7 +135,7 @@
     "outline": "2",
     "title": "extract-readmes CLI",
     "description": "The extract-readmes CLI will be called xrm and will provide a simple interface for users to extract README.md files from their codebase. It will use the core logic from the extract-readmes module and provide options for dry runs, creating ignore files.",
-    "acceptance": "ACCEPTANCE",
+    "acceptance": "- The CLI must provide a command named `xrm` that invokes the extract-readmes functionality from the core module.\n- The CLI must accept a root directory as an argument or use the current working directory by default.\n- The CLI must support the `--dry-run`, `--create-ignore`, `--help`, and `--version` options as described in child requirements.\n- The CLI must display clear, user-friendly output for all operations, including errors and warnings.\n- The CLI must exit with a non-zero status code on error and zero on success.\n- The CLI must handle and report errors such as missing root directory, permission issues, or malformed `.xrmignore` files.\n- The CLI must be covered by automated tests for all behaviors, including:\n  - Successful extraction\n  - Error handling (invalid directory, permissions, etc.)\n  - Option parsing and help/version output\n  - Integration with core logic and ignore file handling",
     "readme": "@TODO: Create readme section after the implementation is finalized.",
     "status": "PLANNED"
   },
@@ -145,7 +145,7 @@
     "outline": "2.1",
     "title": "--dry-run",
     "description": "The --dry-run option will allow users to see what README.md files would be extracted without actually performing the extraction. This is useful for verifying which files will be processed and for generating a .xrmignore file.",
-    "acceptance": "ACCEPTANCE",
+    "acceptance": "- When the `--dry-run` option is provided, the CLI must list all README.md files that would be extracted, without creating or modifying any files or directories.\n- The output must clearly indicate that no files were written or changed.\n- The dry run must respect `.xrmignore` patterns and all core logic constraints (case-insensitive, hidden directories, symlinks, etc.).\n- The dry run must complete successfully and provide accurate results even for large codebases.\n- The CLI must exit with a non-zero status code if an error occurs during the dry run.\n- Automated tests must cover scenarios including:\n  - No README files present\n  - Multiple README files at various depths\n  - README files in ignored or hidden directories\n  - Large directory trees\n  - Error conditions (invalid root, permission denied, etc.)",
     "readme": "@TODO: Create readme section after the implementation is finalized.",
     "status": "PLANNED"
   },
@@ -155,7 +155,7 @@
     "outline": "2.2",
     "title": "--create-ignore",
     "description": "This will create an .xrmignore file with all the README.md files that would be extracted. This allows users to easily manage which files they want to include or exclude from the extraction process without having to manually type them out.",
-    "acceptance": "ACCEPTANCE",
+    "acceptance": "- When the `--create-ignore` option is provided, the CLI must generate a `.xrmignore` file at the root of the project, listing all README.md files that would be extracted (one per line, as relative paths).\n- If a `.xrmignore` file already exists, the CLI must prompt the user or require a `--force` flag to overwrite it.\n- The generated `.xrmignore` file must use valid `.gitignore`-style syntax and be compatible with the ignore logic in the core module.\n- The CLI must handle and report errors such as permission denied or invalid root directory.\n- The CLI must not modify or create any other files or directories during this operation.\n- Automated tests must cover scenarios including:\n  - Creation of `.xrmignore` when none exists\n  - Overwriting with `--force`\n  - Handling of permission errors\n  - Large numbers of README files\n  - Correct formatting and content of the generated ignore file",
     "readme": "@TODO: Create readme section after the implementation is finalized.",
     "status": "PLANNED"
   },

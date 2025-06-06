@@ -414,7 +414,17 @@ The extract-readmes CLI will be called xrm and will provide a simple interface f
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-ACCEPTANCE
+- The CLI must provide a command named `xrm` that invokes the extract-readmes functionality from the core module.
+- The CLI must accept a root directory as an argument or use the current working directory by default.
+- The CLI must support the `--dry-run`, `--create-ignore`, `--help`, and `--version` options as described in child requirements.
+- The CLI must display clear, user-friendly output for all operations, including errors and warnings.
+- The CLI must exit with a non-zero status code on error and zero on success.
+- The CLI must handle and report errors such as missing root directory, permission issues, or malformed `.xrmignore` files.
+- The CLI must be covered by automated tests for all behaviors, including:
+  - Successful extraction
+  - Error handling (invalid directory, permissions, etc.)
+  - Option parsing and help/version output
+  - Integration with core logic and ignore file handling
 
 <!-- reqt_README_field-->
 **README:**
@@ -440,7 +450,17 @@ The --dry-run option will allow users to see what README.md files would be extra
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-ACCEPTANCE
+- When the `--dry-run` option is provided, the CLI must list all README.md files that would be extracted, without creating or modifying any files or directories.
+- The output must clearly indicate that no files were written or changed.
+- The dry run must respect `.xrmignore` patterns and all core logic constraints (case-insensitive, hidden directories, symlinks, etc.).
+- The dry run must complete successfully and provide accurate results even for large codebases.
+- The CLI must exit with a non-zero status code if an error occurs during the dry run.
+- Automated tests must cover scenarios including:
+  - No README files present
+  - Multiple README files at various depths
+  - README files in ignored or hidden directories
+  - Large directory trees
+  - Error conditions (invalid root, permission denied, etc.)
 
 <!-- reqt_README_field-->
 **README:**
@@ -466,7 +486,17 @@ This will create an .xrmignore file with all the README.md files that would be e
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-ACCEPTANCE
+- When the `--create-ignore` option is provided, the CLI must generate a `.xrmignore` file at the root of the project, listing all README.md files that would be extracted (one per line, as relative paths).
+- If a `.xrmignore` file already exists, the CLI must prompt the user or require a `--force` flag to overwrite it.
+- The generated `.xrmignore` file must use valid `.gitignore`-style syntax and be compatible with the ignore logic in the core module.
+- The CLI must handle and report errors such as permission denied or invalid root directory.
+- The CLI must not modify or create any other files or directories during this operation.
+- Automated tests must cover scenarios including:
+  - Creation of `.xrmignore` when none exists
+  - Overwriting with `--force`
+  - Handling of permission errors
+  - Large numbers of README files
+  - Correct formatting and content of the generated ignore file
 
 <!-- reqt_README_field-->
 **README:**
