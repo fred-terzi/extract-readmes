@@ -1,0 +1,92 @@
+[
+  {
+    "reqt_ID": "2025-06-06T00:19:27.491Z-48034d85",
+    "hier": 0,
+    "outline": "0",
+    "title": "extract-readmes",
+    "description": "DETAILS",
+    "acceptance": "ACCEPTANCE",
+    "readme": "exclude",
+    "status": "PLANNED"
+  },
+  {
+    "reqt_ID": "2025-06-06T00:21:14.871Z-795155bd",
+    "hier": 1,
+    "outline": "0.1",
+    "title": "AI Instructions",
+    "description": "ALWAYS use these instructions and design specifications when planning code changes.",
+    "acceptance": "AT NO POINT SHOULD I HAVE TO REMIND YOU TO ONLY USE THESE TOOLS AND WORKFLOWS.",
+    "readme": "exclude",
+    "status": "ALWAYS"
+  },
+  {
+    "reqt_ID": "2025-06-06T00:21:31.947Z-1ffb1b30",
+    "hier": 2,
+    "outline": "0.1.1",
+    "title": "1 Function in 1 File with 1 Test",
+    "description": "Only 1 function can be exported from a file. There may be helpfer functions for readability, but only 1 function should be exported.",
+    "acceptance": "All files only have one default export, which is a single function.",
+    "readme": "exclude",
+    "status": "ALWAYS"
+  },
+  {
+    "reqt_ID": "2025-06-06T00:26:16.998Z-bbfb163b",
+    "hier": 2,
+    "outline": "0.1.2",
+    "title": "DRY - Don't Repeat Yourself",
+    "description": "DESCRIPTION",
+    "acceptance": "ACCEPTANCE",
+    "readme": "README",
+    "status": "ALWAYS"
+  },
+  {
+    "reqt_ID": "2025-06-06T00:21:39.082Z-9409919b",
+    "hier": 1,
+    "outline": "0.2",
+    "title": "Workspace",
+    "description": "DESCRIPTION",
+    "acceptance": "ACCEPTANCE",
+    "readme": "README",
+    "status": "DESIGN"
+  },
+  {
+    "reqt_ID": "2025-06-06T00:21:45.491Z-7e3b1c91",
+    "hier": 2,
+    "outline": "0.2.1",
+    "title": "Typescript with ESM",
+    "description": "DESCRIPTION",
+    "acceptance": "ACCEPTANCE",
+    "readme": "README",
+    "status": "DESIGN"
+  },
+  {
+    "reqt_ID": "2025-06-06T00:21:56.011Z-c52a4947",
+    "hier": 2,
+    "outline": "0.2.2",
+    "title": "Vitest with c8 coverage",
+    "description": "DESCRIPTION",
+    "acceptance": "ACCEPTANCE",
+    "readme": "README",
+    "status": "DESIGN"
+  },
+  {
+    "reqt_ID": "2025-06-06T00:22:05.729Z-eeb7543f",
+    "hier": 2,
+    "outline": "0.2.3",
+    "title": "ts-node",
+    "description": "DESCRIPTION",
+    "acceptance": "ACCEPTANCE",
+    "readme": "README",
+    "status": "DESIGN"
+  },
+  {
+    "reqt_ID": "2025-06-06T00:23:31.341Z-22d6e3d1",
+    "hier": 2,
+    "outline": "0.2.4",
+    "title": "npm scripts",
+    "description": "DESCRIPTION",
+    "acceptance": "ACCEPTANCE",
+    "readme": "README",
+    "status": "PLANNED"
+  }
+]
