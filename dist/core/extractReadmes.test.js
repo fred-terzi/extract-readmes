@@ -36,15 +36,17 @@ describe('extractReadmes', () => {
         const rootContent = yield fs.readFile(path.join(readmesDir, 'root.RM.md'), 'utf8');
         expect(rootContent).toBe('Root README');
     }));
-    it('ensures unique output filenames for duplicate folder names', () => __awaiter(void 0, void 0, void 0, function* () {
+    it('skips duplicate library names and only writes the first README found for each', () => __awaiter(void 0, void 0, void 0, function* () {
         fs.ensureDirSync(path.join(tmpRoot, 'foo'));
         fs.ensureDirSync(path.join(tmpRoot, 'bar/foo'));
         fs.writeFileSync(path.join(tmpRoot, 'foo/README.md'), 'foo1');
         fs.writeFileSync(path.join(tmpRoot, 'bar/foo/README.md'), 'foo2');
         yield extractReadmes({ rootDir: tmpRoot, outDir: readmesDir });
         const files = yield fs.readdir(readmesDir);
-        expect(files.some(f => f.startsWith('foo'))).toBe(true);
-        expect(files.filter(f => f.startsWith('foo')).length).toBe(2);
+        // Only one foo.RM.md should exist
+        expect(files.filter(f => f.startsWith('foo')).length).toBe(1);
+        const fooContent = yield fs.readFile(path.join(readmesDir, 'foo.RM.md'), 'utf8');
+        expect(['foo1', 'foo2']).toContain(fooContent); // Accept either, but only one file
     }));
     it('does not overwrite existing files unless overwrite=true', () => __awaiter(void 0, void 0, void 0, function* () {
         yield extractReadmes({ rootDir: tmpRoot, outDir: readmesDir });

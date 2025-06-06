@@ -47,12 +47,14 @@ export default async function extractReadmes({
     }
     const files = await findReadmes({ rootDir: absRoot, patterns });
     const usedNames = new Set<string>();
+    const writtenLibraries = new Set<string>();
     for (const file of files) {
       // Determine folder name
       const rel = path.relative(absRoot, file);
       const folder = path.dirname(rel) === '.' ? 'root' : path.basename(path.dirname(rel));
-      let baseName = sanitizeName(folder) + '.RM.md';
-      baseName = makeUniqueName(baseName, usedNames);
+      const baseName = sanitizeName(folder) + '.RM.md';
+      if (writtenLibraries.has(baseName)) continue; // Only keep one per library
+      writtenLibraries.add(baseName);
       const dest = path.join(absOut, baseName);
       if (await fs.pathExists(dest) && !overwrite) continue;
       try {

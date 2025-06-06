@@ -41,12 +41,15 @@ export default function extractReadmes() {
             }
             const files = yield findReadmes({ rootDir: absRoot, patterns });
             const usedNames = new Set();
+            const writtenLibraries = new Set();
             for (const file of files) {
                 // Determine folder name
                 const rel = path.relative(absRoot, file);
                 const folder = path.dirname(rel) === '.' ? 'root' : path.basename(path.dirname(rel));
-                let baseName = sanitizeName(folder) + '.RM.md';
-                baseName = makeUniqueName(baseName, usedNames);
+                const baseName = sanitizeName(folder) + '.RM.md';
+                if (writtenLibraries.has(baseName))
+                    continue; // Only keep one per library
+                writtenLibraries.add(baseName);
                 const dest = path.join(absOut, baseName);
                 if ((yield fs.pathExists(dest)) && !overwrite)
                     continue;

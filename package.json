@@ -2,7 +2,10 @@
   "name": "extract-readmes",
   "version": "0.1.0-beta.1",
   "description": "Extract all README.md into a READMEs folder, each README named libraryName.RM.md",
-  "main": "index.js",
+  "bin": {
+    "xrm": "dist/index.js"
+  },
+  "main": "dist/api.js",
   "type": "module",
   "scripts": {
     "test": "vitest run --coverage",
