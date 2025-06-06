@@ -133,31 +133,53 @@ exclude
 ---
 <!-- reqt_id: 2025-06-06T00:21:39.082Z-9409919b --end-->
 
-<!-- reqt_id: 2025-06-06T00:21:45.491Z-7e3b1c91 --start-->
+<!-- reqt_id: 2025-06-06T01:54:39.872Z-ac10d578 --start-->
 
-#### 0.2.1: Typescript with ESM 
+#### 0.2.1: Directory Structure 
 <!-- reqt_status_field-->
 **Status:**
-DONE
+PLANNED
 
  <!-- reqt_Desc_field-->
 **Description**
-
-Typescript with ESM (ECMAScript Modules) is used for the project. This allows for modern JavaScript features and better module management.
-
+```
+extract-readmes/
+├── src/
+│   ├── cli/                  # CLI entry point and CLI-specific logic
+│   │   └── index.ts
+│   ├── core/                 # Core logic (API) for extracting READMEs
+│   │   ├── findReadmes.ts    # Main function to find all README.md files
+│   │   ├── extractReadmes.ts # Logic to extract/copy README files
+│   │   ├── xrmignore.ts      # .xrmignore parsing and matching logic
+│   │   └── utils.ts          # Shared utility functions
+│   ├── types/                # TypeScript type definitions (if needed)
+│   │   └── index.d.ts
+│   └── index.ts              # Main API export (re-exports from core)
+├── tests/
+│   ├── cli/                  # CLI integration and option parsing tests
+│   ├── core/                 # Unit tests for core logic
+│   └── fixtures/             # Test fixtures (sample directory trees, .xrmignore files, etc.)
+├── READMEs/                  # Output directory for extracted README files (created at runtime)
+├── .xrmignore                # Ignore file (created/managed by CLI)
+├── extract-readmes.reqt.md   # Requirements and project plan
+├── package.json
+├── tsconfig.json
+├── LICENSE
+└── README.md                 # Project documentation
+```
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-No CommonJS modules should be used in the project. All modules should be ESM compatible.
+This documentation must match the actual directory structure of the project.
 
 <!-- reqt_README_field-->
 **README:**
 
-exclude
+README
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
-<!-- reqt_id: 2025-06-06T00:21:45.491Z-7e3b1c91 --end-->
+<!-- reqt_id: 2025-06-06T01:54:39.872Z-ac10d578 --end-->
 
 <!-- reqt_id: 2025-06-06T00:21:56.011Z-c52a4947 --start-->
 
@@ -239,6 +261,32 @@ exclude
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T00:23:31.341Z-22d6e3d1 --end-->
+
+<!-- reqt_id: 2025-06-06T00:21:45.491Z-7e3b1c91 --start-->
+
+#### 0.2.5: Typescript with ESM 
+<!-- reqt_status_field-->
+**Status:**
+DONE
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+Typescript with ESM (ECMAScript Modules) is used for the project. This allows for modern JavaScript features and better module management.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+No CommonJS modules should be used in the project. All modules should be ESM compatible.
+
+<!-- reqt_README_field-->
+**README:**
+
+exclude
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T00:21:45.491Z-7e3b1c91 --end-->
 
 <!-- reqt_id: 2025-06-06T01:25:15.160Z-6d9d7e6a --start-->
 

@@ -50,14 +50,14 @@
     "status": "DONE"
   },
   {
-    "reqt_ID": "2025-06-06T00:21:45.491Z-7e3b1c91",
+    "reqt_ID": "2025-06-06T01:54:39.872Z-ac10d578",
     "hier": 2,
     "outline": "0.2.1",
-    "title": "Typescript with ESM",
-    "description": "Typescript with ESM (ECMAScript Modules) is used for the project. This allows for modern JavaScript features and better module management.",
-    "acceptance": "No CommonJS modules should be used in the project. All modules should be ESM compatible.",
-    "readme": "exclude",
-    "status": "DONE"
+    "title": "Directory Structure",
+    "description": "DESCRIPTION",
+    "acceptance": "ACCEPTANCE",
+    "readme": "README",
+    "status": "PLANNED"
   },
   {
     "reqt_ID": "2025-06-06T00:21:56.011Z-c52a4947",
@@ -86,6 +86,16 @@
     "title": "npm scripts",
     "description": "npm test = run all tests with coverage\nnpm build = build the project",
     "acceptance": "All npm scripts must be documented here.",
+    "readme": "exclude",
+    "status": "DONE"
+  },
+  {
+    "reqt_ID": "2025-06-06T00:21:45.491Z-7e3b1c91",
+    "hier": 2,
+    "outline": "0.2.5",
+    "title": "Typescript with ESM",
+    "description": "Typescript with ESM (ECMAScript Modules) is used for the project. This allows for modern JavaScript features and better module management.",
+    "acceptance": "No CommonJS modules should be used in the project. All modules should be ESM compatible.",
     "readme": "exclude",
     "status": "DONE"
   },
