@@ -513,7 +513,7 @@ ansi-colors.RM.md
 ### 1.3: .xrmignore 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+PASSED
 
  <!-- reqt_Desc_field-->
 **Description**
