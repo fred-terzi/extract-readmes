@@ -3,17 +3,22 @@
 # 0: extract-readmes 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+0.1.0-beta.1 Dev
 
  <!-- reqt_Desc_field-->
 **Description**
 
-DETAILS
+extract-readmes is a tool to extract all the README.md files from a code base into a READMEs directory. Each README.md will be named from the folder it was extracted from and .RM.md will be appended to the name. 
+
+xrm will be used as the abbreviation for this tool.
+
+.xrmignore will be used to ignore a folder.
 
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-ACCEPTANCE
+Project Acceptance Criteria:
+- 100% Test Coverage of all acceptance criteria in this document.
 
 <!-- reqt_README_field-->
 **README:**
@@ -107,7 +112,7 @@ exclude
 ### 0.2: Workspace 
 <!-- reqt_status_field-->
 **Status:**
-DESIGN
+DONE
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -133,7 +138,7 @@ exclude
 #### 0.2.1: Typescript with ESM 
 <!-- reqt_status_field-->
 **Status:**
-DESIGN
+DONE
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -159,7 +164,7 @@ exclude
 #### 0.2.2: Vitest with c8 coverage 
 <!-- reqt_status_field-->
 **Status:**
-DESIGN
+DONE
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -187,7 +192,7 @@ exclude
 #### 0.2.3: ts-node 
 <!-- reqt_status_field-->
 **Status:**
-DESIGN
+DONE
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -213,7 +218,7 @@ exclude
 #### 0.2.4: npm scripts 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+DONE
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -234,3 +239,240 @@ exclude
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T00:23:31.341Z-22d6e3d1 --end-->
+
+<!-- reqt_id: 2025-06-06T01:25:15.160Z-6d9d7e6a --start-->
+
+## 1: extract-readmes core logic 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+The extract-readmes core will be exposed as an API that will be used by other tool and a CLI.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+100% test coverage of all acceptance criteria in section.
+
+<!-- reqt_README_field-->
+**README:**
+
+exclude
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T01:25:15.160Z-6d9d7e6a --end-->
+
+<!-- reqt_id: 2025-06-06T01:27:06.195Z-4c20f1af --start-->
+
+### 1.1: Find All READMEs 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+There will be logic to find all README.md files in the codebase. This function will be used not only to extract copies, but also to generate a list of all READMEs in the codebase.
+
+This will be used for the actual extraction but also a dry run to see what would be extracted as well as created a .xrmignore file with all the files so that the user can choose which to include rather than having to type them all out.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+- The function must recursively search the entire codebase, starting from a specified root directory, and return a list of all files named exactly `README.md`, regardless of case sensitivity (e.g., `readme.md`, `ReadMe.md` must also be found).
+- The function must not return any `README.md` files located in directories or subdirectories that match any pattern in a `.xrmignore` file, if present at the root.
+- The function must handle and skip symbolic links to avoid infinite loops or duplicate results.
+- The function must not include `README.md` files from hidden directories (those starting with a dot, e.g., `.git/`), unless explicitly allowed by a parameter.
+- The function must return absolute or root-relative paths for each found `README.md` file.
+- If no `README.md` files are found, the function must return an empty list.
+- If the root directory does not exist or is not accessible, the function must throw an appropriate error.
+- The function must complete successfully and return correct results even if the codebase contains thousands of directories and files.
+- The function must be covered by automated tests for all the above scenarios, including:
+  - No README files present
+  - Multiple README files at various depths
+  - README files in ignored directories
+  - README files in hidden directories
+  - Case-insensitive file matching
+  - Symbolic link handling
+  - Large directory trees
+  - Invalid or missing root directory
+
+<!-- reqt_README_field-->
+**README:**
+
+@TODO: Create readme section after the implementation is finalized.
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T01:27:06.195Z-4c20f1af --end-->
+
+<!-- reqt_id: 2025-06-06T01:27:39.506Z-f9dbe195 --start-->
+
+### 1.2: READMEs/ 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+The READMEs/ directory will be created to store all the extracted README.md files. Each file will be named based on the folder it was extracted from, with .RM.md appended to the name.
+
+**Example:**
+```
+ansi-colors.RM.md
+```
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+- The tool must create a directory named `READMEs` at the root of the project if it does not already exist.
+- For each extracted `README.md` file, a new file must be created in the `READMEs/` directory.
+- The new file's name must be the name of the folder from which the `README.md` was extracted, with `.RM.md` appended (e.g., extracting from `./ansi-colors/README.md` creates `READMEs/ansi-colors.RM.md`).
+- If multiple folders have the same name at different paths, the tool must ensure unique output filenames (e.g., by prefixing with parent directories or using a deterministic scheme).
+- The tool must not overwrite existing files in `READMEs/` unless explicitly allowed by a parameter.
+- If the `READMEs/` directory is not writable, the tool must throw an appropriate error.
+- If a folder does not contain a `README.md`, no file should be created for that folder.
+- The tool must handle edge cases such as:
+  - Folder names with special characters, spaces, or unicode.
+  - Deeply nested folders.
+  - Very large numbers of README files.
+  - Filesystem case sensitivity (output filenames must be unique even on case-insensitive filesystems).
+- All behaviors must be covered by automated tests, including:
+  - Creation of the `READMEs/` directory.
+  - Naming and uniqueness of output files.
+  - Handling of write errors and permission issues.
+  - Handling of special characters and edge cases in folder names.
+
+<!-- reqt_README_field-->
+**README:**
+
+@TODO: Create readme section after the implementation is finalized.
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T01:27:39.506Z-f9dbe195 --end-->
+
+<!-- reqt_id: 2025-06-06T01:27:44.336Z-058294bd --start-->
+
+### 1.3: .xrmignore 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+.xrmignore will be used to ignore certain folders from being processed by the extract-readmes tool. It will follow the same syntax as .gitignore.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+- The `.xrmignore` file must be read from the root of the project if present.
+- The syntax of `.xrmignore` must match that of `.gitignore`, supporting glob patterns, negation (`!`), comments, and blank lines.
+- Any directory or file path matching a pattern in `.xrmignore` must be excluded from all extract-readmes operations.
+- If `.xrmignore` is malformed or contains invalid patterns, the tool must fail with a clear error message.
+- If `.xrmignore` is not present, no paths are excluded by default.
+- The tool must support reloading `.xrmignore` if it is changed during a dry run or interactive session.
+- The tool must handle edge cases, including:
+  - Patterns that match hidden directories or files.
+  - Patterns that use wildcards, recursive globs (`**`), or character ranges.
+  - Negated patterns that re-include previously excluded paths.
+  - Large `.xrmignore` files with hundreds of patterns.
+  - Unicode and special characters in patterns and paths.
+- All behaviors must be covered by automated tests, including:
+  - Exclusion and inclusion of files/folders based on patterns.
+  - Handling of invalid or missing `.xrmignore`.
+  - Pattern precedence and negation.
+  - Performance with large ignore files.
+
+<!-- reqt_README_field-->
+**README:**
+
+@TODO: Create readme section after the implementation is finalized.
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T01:27:44.336Z-058294bd --end-->
+
+<!-- reqt_id: 2025-06-06T01:31:12.594Z-4cd86c5c --start-->
+
+## 2: extract-readmes CLI 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+The extract-readmes CLI will be called xrm and will provide a simple interface for users to extract README.md files from their codebase. It will use the core logic from the extract-readmes module and provide options for dry runs, creating ignore files.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+ACCEPTANCE
+
+<!-- reqt_README_field-->
+**README:**
+
+README
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T01:31:12.594Z-4cd86c5c --end-->
+
+<!-- reqt_id: 2025-06-06T01:31:55.565Z-5df01fb9 --start-->
+
+### 2.1: --dry-run 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+The --dry-run option will allow users to see what README.md files would be extracted without actually performing the extraction. This is useful for verifying which files will be processed and for generating a .xrmignore file.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+ACCEPTANCE
+
+<!-- reqt_README_field-->
+**README:**
+
+README
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T01:31:55.565Z-5df01fb9 --end-->
+
+<!-- reqt_id: 2025-06-06T01:32:01.580Z-91a32361 --start-->
+
+### 2.2: --create-ignore 
+<!-- reqt_status_field-->
+**Status:**
+PLANNED
+
+ <!-- reqt_Desc_field-->
+**Description**
+
+This will create an .xrmignore file with all the README.md files that would be extracted. This allows users to easily manage which files they want to include or exclude from the extraction process without having to manually type them out.
+
+<!-- reqt_Accept_field-->
+**Acceptance:**
+
+ACCEPTANCE
+
+<!-- reqt_README_field-->
+**README:**
+
+README
+
+<!-- Make Content "exclude" to exclude from README generation -->
+---
+<!-- reqt_id: 2025-06-06T01:32:01.580Z-91a32361 --end-->
