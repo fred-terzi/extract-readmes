@@ -1,0 +1,2 @@
+# Output directory for extracted README files (created at runtime)
+# This directory will be created by the tool, not tracked in git.
