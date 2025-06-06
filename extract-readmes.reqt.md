@@ -301,16 +301,13 @@ DESIGN
 **Description**
 
 All error handling must be done using try/catch blocks. This allows for better error handling and debugging. Must be done gracefully and not crash the process.
-Use green checks for success and red crosses for errors in the console output and exclamation marks for warnings.
+
 
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
 - All error handling in the codebase must use try/catch blocks for asynchronous and synchronous operations that may throw.
 - The process must not crash on any handled error; instead, errors must be reported gracefully to the user.
-- On successful operations, the CLI and core logic must display a green check mark (✔) in the console output.
-- On errors, a red cross (✖) must be shown in the console output, along with a clear, user-friendly error message.
-- On warnings (e.g., non-fatal issues, skipped files), an exclamation mark (!) must be shown in the console output, with a clear warning message.
 - All error, warning, and success messages must be tested for correct formatting and appearance in the console.
 - Automated tests must cover scenarios including:
   - Errors thrown by file system operations (e.g., permission denied, file not found)
@@ -390,7 +387,7 @@ exclude
 #### 0.2.9: ESLint and Prettier 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+DONE
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -456,26 +453,30 @@ There will be logic to find all README.md files in the codebase. This function w
 
 This will be used for the actual extraction but also a dry run to see what would be extracted as well as created a .xrmignore file with all the files so that the user can choose which to include rather than having to type them all out.
 
+The design should allow for adding other file names or patterns in the future, such as `CONTRIBUTING.md`, `CHANGELOG.md`, etc., without significant changes to the core logic.
+
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-- The function must recursively search the entire codebase, starting from a specified root directory, and return a list of all files named exactly `README.md`, regardless of case sensitivity (e.g., `readme.md`, `ReadMe.md` must also be found).
-- The function must not return any `README.md` files located in directories or subdirectories that match any pattern in a `.xrmignore` file, if present at the root.
+- The function must recursively search the entire codebase, starting from a specified root directory, and return a list of all files matching a configurable set of file name patterns (defaulting to `README.md`), regardless of case sensitivity (e.g., `readme.md`, `ReadMe.md` must also be found).
+- The function must allow the caller to specify additional file names or glob patterns (such as `CONTRIBUTING.md`, `CHANGELOG.md`, etc.) to search for, without requiring changes to the core logic.
+- The function must not return any files located in directories or subdirectories that match any pattern in a `.xrmignore` file, if present at the root.
 - The function must handle and skip symbolic links to avoid infinite loops or duplicate results.
-- The function must not include `README.md` files from hidden directories (those starting with a dot, e.g., `.git/`), unless explicitly allowed by a parameter.
-- The function must return absolute or root-relative paths for each found `README.md` file.
-- If no `README.md` files are found, the function must return an empty list.
+- The function must not include files from hidden directories (those starting with a dot, e.g., `.git/`), unless explicitly allowed by a parameter.
+- The function must return absolute or root-relative paths for each found file.
+- If no matching files are found, the function must return an empty list.
 - If the root directory does not exist or is not accessible, the function must throw an appropriate error.
 - The function must complete successfully and return correct results even if the codebase contains thousands of directories and files.
 - The function must be covered by automated tests for all the above scenarios, including:
-  - No README files present
-  - Multiple README files at various depths
-  - README files in ignored directories
-  - README files in hidden directories
+  - No matching files present
+  - Multiple matching files at various depths
+  - Files in ignored directories
+  - Files in hidden directories
   - Case-insensitive file matching
   - Symbolic link handling
   - Large directory trees
   - Invalid or missing root directory
+  - Use of custom file patterns (e.g., `CONTRIBUTING.md`, `CHANGELOG.md`)
 
 <!-- reqt_README_field-->
 **README:**
