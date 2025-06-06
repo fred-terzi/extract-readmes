@@ -487,12 +487,16 @@ PLANNED
  <!-- reqt_Desc_field-->
 **Description**
 
-DESCRIPTION
+Displays help information about the extract-readmes CLI tool, including available commands, options, and usage examples.
 
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-ACCEPTANCE
+- When the `--help` or `-h` flag is provided, the CLI must display a help message describing all available commands, options, and usage examples.
+- The help output must include descriptions for `--dry-run`, `--create-ignore`, `--version`, and any other supported options.
+- The help message must be clear, concise, and formatted for easy reading in a terminal.
+- The CLI must exit with a status code of 0 after displaying help.
+- The help output must be tested for accuracy and completeness, including edge cases such as unknown options or subcommands.
 
 <!-- reqt_README_field-->
 **README:**
@@ -513,12 +517,16 @@ PLANNED
  <!-- reqt_Desc_field-->
 **Description**
 
-DESCRIPTION
+Displays the current version of the extract-readmes CLI tool.
 
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-ACCEPTANCE
+- When the `--version` or `-v` flag is provided, the CLI must print the current version of the extract-readmes tool as specified in `package.json`.
+- The version output must be a single line, suitable for use in scripts or automation.
+- The CLI must exit with a status code of 0 after displaying the version.
+- If the version cannot be determined (e.g., missing or malformed `package.json`), the CLI must display a clear error message and exit with a non-zero status code.
+- Automated tests must cover normal and error scenarios for version output.
 
 <!-- reqt_README_field-->
 **README:**
