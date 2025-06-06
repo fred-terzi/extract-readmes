@@ -462,7 +462,6 @@ The design should allow for adding other file names or patterns in the future, s
 - The function must allow the caller to specify additional file names or glob patterns (such as `CONTRIBUTING.md`, `CHANGELOG.md`, etc.) to search for, without requiring changes to the core logic.
 - The function must not return any files located in directories or subdirectories that match any pattern in a `.xrmignore` file, if present at the root.
 - The function must handle and skip symbolic links to avoid infinite loops or duplicate results.
-- The function must not include files from hidden directories (those starting with a dot, e.g., `.git/`), unless explicitly allowed by a parameter.
 - The function must return absolute or root-relative paths for each found file.
 - If no matching files are found, the function must return an empty list.
 - If the root directory does not exist or is not accessible, the function must throw an appropriate error.
