@@ -64,6 +64,8 @@ export default async function extractReadmes({
       }
     }
   } catch (err) {
-    throw new Error(`extractReadmes failed: ${(err as Error).message}`);
+    throw new Error(`extractReadmes failed: ${err instanceof Error ? err.message : String(err)}`);
   }
 }
+
+export { sanitizeName, makeUniqueName };
