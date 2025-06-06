@@ -143,31 +143,7 @@ DESIGN
  <!-- reqt_Desc_field-->
 **Description**
 
-```
-extract-readmes/
-├── src/
-│   ├── cli/                  # CLI entry point and CLI-specific logic
-│   │   └── index.ts
-│   ├── core/                 # Core logic (API) for extracting READMEs
-│   │   ├── findReadmes.ts    # Main function to find all README.md files
-│   │   ├── extractReadmes.ts # Logic to extract/copy README files
-│   │   ├── xrmignore.ts      # .xrmignore parsing and matching logic
-│   │   └── utils.ts          # Shared utility functions
-│   ├── types/                # TypeScript type definitions (if needed)
-│   │   └── index.d.ts
-│   └── index.ts              # Main API export (re-exports from core)
-├── tests/
-│   ├── cli/                  # CLI integration and option parsing tests
-│   ├── core/                 # Unit tests for core logic
-│   └── fixtures/             # Test fixtures (sample directory trees, .xrmignore files, etc.)
-├── READMEs/                  # Output directory for extracted README files (created at runtime)
-├── .xrmignore                # Ignore file (created/managed by CLI)
-├── extract-readmes.reqt.md   # Requirements and project plan
-├── package.json
-├── tsconfig.json
-├── LICENSE
-└── README.md                 # Project documentation
-```
+All .test.ts files will be in the same directory as the file they are testing. This allows for better organization and easier navigation of the codebase.
 
 <!-- reqt_Accept_field-->
 **Acceptance:**
