@@ -553,7 +553,6 @@ PLANNED
 - Any directory or file path matching a pattern in `.xrmignore` must be excluded from all extract-readmes operations.
 - If `.xrmignore` is malformed or contains invalid patterns, the tool must fail with a clear error message.
 - If `.xrmignore` is not present, no paths are excluded by default.
-- The tool must support reloading `.xrmignore` if it is changed during a dry run or interactive session.
 - The tool must handle edge cases, including:
   - Patterns that match hidden directories or files.
   - Patterns that use wildcards, recursive globs (`**`), or character ranges.
