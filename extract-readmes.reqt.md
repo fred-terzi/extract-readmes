@@ -278,7 +278,6 @@ DESIGN
 
 All error handling must be done using try/catch blocks. This allows for better error handling and debugging. Must be done gracefully and not crash the process.
 
-
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
@@ -420,7 +419,7 @@ exclude
 ### 1.1: Find All READMEs 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+PASSED
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -467,7 +466,7 @@ The design should allow for adding other file names or patterns in the future, s
 ### 1.2: READMEs/ 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+PASSED
 
  <!-- reqt_Desc_field-->
 **Description**
