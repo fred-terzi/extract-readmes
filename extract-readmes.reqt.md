@@ -65,6 +65,15 @@ By default, `xrm` runs in the current directory. You can specify a different roo
 xrm /path/to/your/project
 ```
 
+## Contributing
+
+Contributions are welcome!
+
+Please start by opening an issue to request a feature or report a bug. For further details on contributing, please see our [Contributing Guide](CONTRIBUTING.md).
+
+[![Open Issues](https://img.shields.io/github/issues/fredrikaverpil/extract-readmes.svg)](https://github.com/fred-terzi/extract-readmes/issues)
+[![Contributing Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](CONTRIBUTING.md)
+
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T00:19:27.491Z-48034d85 --end-->
