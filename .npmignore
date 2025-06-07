@@ -10,6 +10,8 @@ tsconfig.json
 src/core/__fixtures__/
 *.md
 !README.md
+!CONTRIBUTING.md
+!LICENSE
 
 # Ignore type output if not needed
 *.tsbuildinfo
@@ -25,5 +27,6 @@ src/core/__fixtures__/
 # Ignore node_modules
 node_modules/
 
+# Ignore reqtext and src (not needed in npm package)
 .reqt/
-.src/
+src/
