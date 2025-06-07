@@ -45,8 +45,12 @@ export default async function cli() {
         console.log('.xrmignore file created.');
         process.exit(0);
       } else {
-        // Always overwrite the READMEs/ directory to reflect any changes in .xrmignore or README.md files found
+        // Always check if READMEs/ exists and require --force to overwrite
         const readmesDir = path.join(absRoot, 'READMEs');
+        if (await fs.pathExists(readmesDir) && !opts.force) {
+          console.error('READMEs/ already exists. Use --force to overwrite.');
+          process.exit(1);
+        }
         if (await fs.pathExists(readmesDir)) {
           await fs.remove(readmesDir);
         }

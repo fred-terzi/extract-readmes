@@ -100,8 +100,8 @@ describe('CLI (xrm)', () => {
     // Ensure file is deleted before proceeding
     expect(await fs.pathExists(path.join(TEST_ROOT, 'foo', 'README.md'))).toBe(false);
 
-    // Re-run extraction
-    await runCli([]);
+    // Re-run extraction WITH --force
+    await runCli(['--force']);
     files = await fs.readdir(READMES_DIR);
     // Should only contain bar.RM.md, not foo.RM.md
     expect(files.some(f => f === 'bar.RM.md')).toBe(true);
@@ -109,9 +109,40 @@ describe('CLI (xrm)', () => {
 
     // Now add .xrmignore to exclude bar/README.md
     await fs.writeFile(XRMIGNORE_PATH, 'bar/README.md\n');
-    await runCli([]);
+    await runCli(['--force']);
     files = await fs.readdir(READMES_DIR);
     // Should be empty since all README.md files are ignored
     expect(files.length).toBe(0);
+  });
+
+  it('errors if READMEs/ exists and --force is not given', async () => {
+    // Initial extraction to create READMEs/
+    await runCli([]);
+    expect(await fs.pathExists(READMES_DIR)).toBe(true);
+    // Try to extract again without --force
+    const { stderr, exitCode } = await runCli([], { reject: false });
+    expect(stderr).toMatch(/READMEs\/ already exists/);
+    expect(exitCode).toBe(1);
+  });
+
+  it('overwrites READMEs/ directory with --force', async () => {
+    // Initial extraction to create READMEs/
+    await runCli([]);
+    expect(await fs.pathExists(READMES_DIR)).toBe(true);
+    // Add a new subfolder with README.md
+    await fs.mkdirp(path.join(TEST_ROOT, 'bar'));
+    await fs.writeFile(path.join(TEST_ROOT, 'bar', 'README.md'), '# Bar\n');
+    // Remove the old foo/README.md
+    await fs.remove(path.join(TEST_ROOT, 'foo', 'README.md'));
+    // Ensure file is deleted before proceeding
+    expect(await fs.pathExists(path.join(TEST_ROOT, 'foo', 'README.md'))).toBe(false);
+    // Re-run extraction with --force
+    const { stdout, exitCode } = await runCli(['--force']);
+    expect(stdout).toMatch(/README.md files extracted to READMEs\//);
+    expect(exitCode).toBe(0);
+    const files = await fs.readdir(READMES_DIR);
+    // Should only contain bar.RM.md, not foo.RM.md
+    expect(files.some(f => f === 'bar.RM.md')).toBe(true);
+    expect(files.some(f => f === 'foo.RM.md')).toBe(false);
   });
 });
