@@ -23,7 +23,8 @@ Project Acceptance Criteria:
 <!-- reqt_README_field-->
 **README:**
 
-exclude
+**extract-readmes** (abbreviated as `xrm`) is a tool for extracting all `README.md` files from a codebase into a centralized `READMEs` directory. Each extracted README is renamed based on its source folder, with `.RM.md` appended. The tool supports ignoring specific folders or files using a `.xrmignore` file with `.gitignore`-style patterns. All core and CLI features are fully tested and designed for reliability and scalability in large projects.
+
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
@@ -377,15 +378,25 @@ The extract-readmes core will be exposed as an API that will be used by other to
 <!-- reqt_README_field-->
 **README:**
 
-exclude
+## Core Logic
 
+The core logic of **extract-readmes** is implemented as an async API, designed for use both programmatically and by the CLI. It provides robust, fully tested functions to:
+
+- Recursively discover all `README.md` (and similar) files in a codebase, with support for custom patterns and case-insensitive matching.
+- Exclude files and directories based on `.xrmignore` patterns, using `.gitignore`-style syntax.
+- Handle symbolic links safely, avoid infinite loops, and ensure performance on large codebases.
+- Return absolute or root-relative paths for all discovered files.
+- Gracefully handle errors such as missing directories, permission issues, and malformed ignore files.
+- Guarantee 100% test coverage for all logic and edge cases.
+
+This API is the foundation for the CLI and can be integrated into other tools or workflows as needed.
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T01:25:15.160Z-6d9d7e6a --end-->
 
 <!-- reqt_id: 2025-06-06T01:27:06.195Z-4c20f1af --start-->
 
-### 1.1: Find All READMEs 
+### 1.1: Recursive README and Documentation File Discovery 
 <!-- reqt_status_field-->
 **Status:**
 PASSED
@@ -424,8 +435,7 @@ The design should allow for adding other file names or patterns in the future, s
 <!-- reqt_README_field-->
 **README:**
 
-@TODO: Create readme section after the implementation is finalized.
-
+The core API provides a function to recursively search a codebase for all `README.md` files, supporting case-insensitive matching and custom patterns (e.g., `CONTRIBUTING.md`, `CHANGELOG.md`). The search respects `.xrmignore` patterns to exclude files or directories, and safely handles symbolic links to avoid infinite loops or duplicates. Results are returned as absolute or root-relative paths. The function is robust, scalable to large codebases, and fully tested for edge cases such as hidden directories, symlinks, and custom ignore patterns.
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T01:27:06.195Z-4c20f1af --end-->
@@ -471,8 +481,7 @@ ansi-colors.RM.md
 <!-- reqt_README_field-->
 **README:**
 
-@TODO: Create readme section after the implementation is finalized.
-
+All extracted `README.md` files are copied into a central `READMEs/` directory at the project root. Each file is renamed using the name of its source folder, with `.RM.md` appended (e.g., extracting from `./ansi-colors/README.md` creates `READMEs/ansi-colors.RM.md`). The tool ensures unique filenames even for folders with the same name at different paths, and handles special characters, deep nesting, and large numbers of files. Existing files are not overwritten unless explicitly allowed. All behaviors are robustly tested, including edge cases for naming, permissions, and directory creation.
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T01:27:39.506Z-f9dbe195 --end-->
@@ -512,7 +521,9 @@ PASSED
 <!-- reqt_README_field-->
 **README:**
 
-@TODO: Create readme section after the implementation is finalized.
+### .xrmignore Support
+
+The `.xrmignore` file allows users to exclude specific files and directories from extraction, using the same flexible pattern syntax as `.gitignore`. Patterns support wildcards, recursive globs, negation, comments, and unicode or special characters. The tool reads `.xrmignore` from the project root and applies all patterns when discovering and extracting README files. Invalid or malformed `.xrmignore` files result in a clear error. All ignore logic is fully tested, including edge cases for pattern precedence, negation, large ignore files, and handling of hidden or deeply nested paths.
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
