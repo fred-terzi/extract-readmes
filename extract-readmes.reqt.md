@@ -514,7 +514,7 @@ ansi-colors.RM.md
   - Naming and uniqueness of output files.
   - Handling of write errors and permission issues.
   - Handling of special characters and edge cases in folder names.
-
+- If an existing READMEs/ directory is present, the 
 <!-- reqt_README_field-->
 **README:**
 
@@ -590,6 +590,7 @@ The extract-readmes CLI will be called xrm and will provide a simple interface f
   - Error handling (invalid directory, permissions, etc.)
   - Option parsing and help/version output
   - Integration with core logic and ignore file handling
+- If an existing READMEs/ directory is present, will overwrite it to reflect any changes in the .xrmignore file or README.md files found.
 
 <!-- reqt_README_field-->
 **README:**

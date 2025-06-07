@@ -56,6 +56,11 @@ export default function cli() {
                     process.exit(0);
                 }
                 else {
+                    // Always overwrite the READMEs/ directory to reflect any changes in .xrmignore or README.md files found
+                    const readmesDir = path.join(absRoot, 'READMEs');
+                    if (yield fs.pathExists(readmesDir)) {
+                        yield fs.remove(readmesDir);
+                    }
                     yield extractReadmes({ rootDir: absRoot });
                     console.log('README.md files extracted to READMEs/.');
                     process.exit(0);

@@ -81,4 +81,30 @@ describe('CLI (xrm)', () => {
         expect(stdout).toMatch(/\.xrmignore file created/);
         expect(exitCode).toBe(0);
     }));
+    it('overwrites READMEs/ directory to reflect changes in .xrmignore or README.md files', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Initial extraction
+        yield runCli([]);
+        expect(yield fs.pathExists(READMES_DIR)).toBe(true);
+        let files = yield fs.readdir(READMES_DIR);
+        expect(files.some(f => f === 'foo.RM.md')).toBe(true);
+        // Add a new subfolder with README.md
+        yield fs.mkdirp(path.join(TEST_ROOT, 'bar'));
+        yield fs.writeFile(path.join(TEST_ROOT, 'bar', 'README.md'), '# Bar\n');
+        // Remove the old foo/README.md
+        yield fs.remove(path.join(TEST_ROOT, 'foo', 'README.md'));
+        // Ensure file is deleted before proceeding
+        expect(yield fs.pathExists(path.join(TEST_ROOT, 'foo', 'README.md'))).toBe(false);
+        // Re-run extraction
+        yield runCli([]);
+        files = yield fs.readdir(READMES_DIR);
+        // Should only contain bar.RM.md, not foo.RM.md
+        expect(files.some(f => f === 'bar.RM.md')).toBe(true);
+        expect(files.some(f => f === 'foo.RM.md')).toBe(false);
+        // Now add .xrmignore to exclude bar/README.md
+        yield fs.writeFile(XRMIGNORE_PATH, 'bar/README.md\n');
+        yield runCli([]);
+        files = yield fs.readdir(READMES_DIR);
+        // Should be empty since all README.md files are ignored
+        expect(files.length).toBe(0);
+    }));
 });

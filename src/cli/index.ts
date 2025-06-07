@@ -45,6 +45,11 @@ export default async function cli() {
         console.log('.xrmignore file created.');
         process.exit(0);
       } else {
+        // Always overwrite the READMEs/ directory to reflect any changes in .xrmignore or README.md files found
+        const readmesDir = path.join(absRoot, 'READMEs');
+        if (await fs.pathExists(readmesDir)) {
+          await fs.remove(readmesDir);
+        }
         await extractReadmes({ rootDir: absRoot });
         console.log('README.md files extracted to READMEs/.');
         process.exit(0);
