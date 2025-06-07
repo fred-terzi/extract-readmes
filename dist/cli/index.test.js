@@ -11,7 +11,8 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { execa } from 'execa';
 import fs from 'fs-extra';
 import path from 'path';
-const CLI_PATH = path.resolve(__dirname, 'index.js');
+// Use the built JS CLI for integration tests
+const CLI_PATH = path.resolve(__dirname, '../../dist/cli/index.js');
 const TEST_ROOT = path.resolve(__dirname, '../core/__fixtures__/cli-test-root');
 const READMES_DIR = path.join(TEST_ROOT, 'READMEs');
 const XRMIGNORE_PATH = path.join(TEST_ROOT, '.xrmignore');

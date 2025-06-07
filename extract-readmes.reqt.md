@@ -3,7 +3,7 @@
 # 0: extract-readmes 
 <!-- reqt_status_field-->
 **Status:**
-0.1.0-beta.1 Dev
+0.1.0
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -153,7 +153,7 @@ This documentation must match the actual directory structure of the project.
 <!-- reqt_README_field-->
 **README:**
 
-README
+exclude
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
@@ -321,7 +321,7 @@ All exported functions must be async functions. This allows for better performan
 <!-- reqt_README_field-->
 **README:**
 
-README
+exclude
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
@@ -357,43 +357,12 @@ exclude
 ---
 <!-- reqt_id: 2025-06-06T02:01:02.354Z-f66db433 --end-->
 
-<!-- reqt_id: 2025-06-06T02:09:43.996Z-8f7a360b --start-->
-
-#### 0.2.9: ESLint and Prettier 
-<!-- reqt_status_field-->
-**Status:**
-DONE
-
- <!-- reqt_Desc_field-->
-**Description**
-
-ESLint and Prettier will be used for code formatting and linting. This ensures consistent code style and helps catch potential issues early in the development process.
-
-<!-- reqt_Accept_field-->
-**Acceptance:**
-
-- ESLint must be configured to enforce a consistent coding style and catch common errors.
-- Prettier must be configured to automatically format code according to the project's style guidelines.
-- All code must pass ESLint and Prettier checks before it can be merged into the main branch.
-- Automated tests must cover scenarios including:
-  - Code that violates ESLint rules
-  - Code that is not properly formatted by Prettier
-
-<!-- reqt_README_field-->
-**README:**
-
-exclude
-
-<!-- Make Content "exclude" to exclude from README generation -->
----
-<!-- reqt_id: 2025-06-06T02:09:43.996Z-8f7a360b --end-->
-
 <!-- reqt_id: 2025-06-06T01:25:15.160Z-6d9d7e6a --start-->
 
 ## 1: extract-readmes core logic 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+PASSED
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -403,7 +372,7 @@ The extract-readmes core will be exposed as an API that will be used by other to
 <!-- reqt_Accept_field-->
 **Acceptance:**
 
-100% test coverage of all acceptance criteria in section.
+100% test coverage of all acceptance criteria in section. It is acceptable to only test the .js rather than .ts directly, but the functions and branch must be 100% covered by tests.
 
 <!-- reqt_README_field-->
 **README:**
@@ -554,7 +523,7 @@ PASSED
 ## 2: extract-readmes CLI 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+PASSED
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -590,7 +559,7 @@ The extract-readmes CLI will be called xrm and will provide a simple interface f
 ### 2.1: --dry-run 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+PASSED
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -626,7 +595,7 @@ The --dry-run option will allow users to see what README.md files would be extra
 ### 2.2: --create-ignore 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+PASSED
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -662,7 +631,7 @@ This will create an .xrmignore file with all the README.md files that would be e
 ### 2.3: --help, -h 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+PASSED
 
  <!-- reqt_Desc_field-->
 **Description**
@@ -692,7 +661,7 @@ Displays help information about the extract-readmes CLI tool, including availabl
 ### 2.4: --version, -v 
 <!-- reqt_status_field-->
 **Status:**
-PLANNED
+PASSED
 
  <!-- reqt_Desc_field-->
 **Description**

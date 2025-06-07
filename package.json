@@ -1,6 +1,6 @@
 {
   "name": "extract-readmes",
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0",
   "description": "Extract all README.md into a READMEs folder, each README named libraryName.RM.md",
   "bin": {
     "xrm": "dist/index.js"

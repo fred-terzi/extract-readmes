@@ -1,0 +1,29 @@
+# Ignore test files and coverage
+src/**/*.test.ts
+coverage/
+
+# Ignore config and local files
+vitest.config.ts
+tsconfig.json
+
+# Ignore fixtures and docs
+src/core/__fixtures__/
+*.md
+!README.md
+
+# Ignore type output if not needed
+*.tsbuildinfo
+
+# Ignore local environment files
+.env
+
+# Ignore editor/project files
+.vscode/
+.idea/
+.DS_Store
+
+# Ignore node_modules
+node_modules/
+
+.reqt/
+.src/
