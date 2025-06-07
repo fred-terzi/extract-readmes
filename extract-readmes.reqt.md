@@ -23,8 +23,47 @@ Project Acceptance Criteria:
 <!-- reqt_README_field-->
 **README:**
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/extract-readmes.svg)](https://www.npmjs.com/package/extract-readmes)
+
 **extract-readmes** (abbreviated as `xrm`) is a tool for extracting all `README.md` files from a codebase into a centralized `READMEs` directory. Each extracted README is renamed based on its source folder, with `.RM.md` appended. The tool supports ignoring specific folders or files using a `.xrmignore` file with `.gitignore`-style patterns. All core and CLI features are fully tested and designed for reliability and scalability in large projects.
 
+## Installation
+
+You can install **extract-readmes** globally or as a dev dependency using npm:
+
+```sh
+npm install -g extract-readmes
+# or as a dev dependency
+npm install --save-dev extract-readmes
+```
+
+## Quick Start
+
+To extract all `README.md` files from your project into a centralized `READMEs/` directory, run:
+
+```sh
+xrm
+```
+
+**Common options:**
+
+- Preview what would be extracted (no changes made):
+  ```sh
+  xrm --dry-run
+  ```
+- Generate a `.xrmignore` file listing all README files. Then you can edit this file to choose which files to include or exclude. 
+
+  ```sh
+  xrm --create-ignore
+  ```
+> **Note from Fred:** I found it is easier to create the full list then edit it down rather than trying to write out the files you want to ignore. Especially for node_modules!
+
+By default, `xrm` runs in the current directory. You can specify a different root directory as an argument:
+
+```sh
+xrm /path/to/your/project
+```
 
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
@@ -378,8 +417,6 @@ The extract-readmes core will be exposed as an API that will be used by other to
 <!-- reqt_README_field-->
 **README:**
 
-## Core Logic
-
 The core logic of **extract-readmes** is implemented as an async API, designed for use both programmatically and by the CLI. It provides robust, fully tested functions to:
 
 - Recursively discover all `README.md` (and similar) files in a codebase, with support for custom patterns and case-insensitive matching.
@@ -521,8 +558,6 @@ PASSED
 <!-- reqt_README_field-->
 **README:**
 
-### .xrmignore Support
-
 The `.xrmignore` file allows users to exclude specific files and directories from extraction, using the same flexible pattern syntax as `.gitignore`. Patterns support wildcards, recursive globs, negation, comments, and unicode or special characters. The tool reads `.xrmignore` from the project root and applies all patterns when discovering and extracting README files. Invalid or malformed `.xrmignore` files result in a clear error. All ignore logic is fully tested, including edge cases for pattern precedence, negation, large ignore files, and handling of hidden or deeply nested paths.
 
 <!-- Make Content "exclude" to exclude from README generation -->
@@ -559,8 +594,7 @@ The extract-readmes CLI will be called xrm and will provide a simple interface f
 <!-- reqt_README_field-->
 **README:**
 
-@TODO: Create readme section after the implementation is finalized.
-
+The extract-readmes CLI provides a command-line interface (`xrm`) for extracting README files from a codebase. It supports options for dry runs, generating `.xrmignore` files, displaying help, and showing the current version. The CLI is user-friendly, displays clear output and error messages, and integrates tightly with the core logic. All CLI features and options are fully tested, including error handling, option parsing, and integration with ignore logic.
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T01:31:12.594Z-4cd86c5c --end-->
@@ -595,8 +629,7 @@ The --dry-run option will allow users to see what README.md files would be extra
 <!-- reqt_README_field-->
 **README:**
 
-@TODO: Create readme section after the implementation is finalized.
-
+The `--dry-run` option allows users to preview which `README.md` files would be extracted without making any changes to the filesystem. When used, the CLI lists all files that would be processed, clearly indicating that no files or directories are created or modified. The dry run respects all `.xrmignore` patterns and core logic constraints, including case-insensitive matching, hidden directories, and symlink handling. This feature is fully tested for accuracy and reliability, even in large or complex codebases.
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T01:31:55.565Z-5df01fb9 --end-->
@@ -631,8 +664,7 @@ This will create an .xrmignore file with all the README.md files that would be e
 <!-- reqt_README_field-->
 **README:**
 
-@TODO: Create readme section after the implementation is finalized.
-
+The `--create-ignore` option generates a `.xrmignore` file at the project root, listing all `README.md` files that would be extracted (one per line, as relative paths). This helps users quickly customize which files to include or exclude from extraction. If a `.xrmignore` already exists, the CLI prompts for confirmation or requires a `--force` flag to overwrite. The generated file uses `.gitignore`-style syntax and is fully compatible with the tool’s ignore logic. All behaviors—including file creation, overwriting, formatting, and error handling—are thoroughly tested, even for large projects or permission issues.
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T01:32:01.580Z-91a32361 --end-->
@@ -661,8 +693,7 @@ Displays help information about the extract-readmes CLI tool, including availabl
 <!-- reqt_README_field-->
 **README:**
 
-@TODO: Create readme section after the implementation is finalized.
-
+The `--help` (or `-h`) option displays detailed usage information for the extract-readmes CLI. It lists all available commands and options, including `--dry-run`, `--create-ignore`, `--version`, and their descriptions. The help output is formatted for easy reading in the terminal and includes usage examples to guide users. This feature ensures users can quickly understand how to use the tool and all its capabilities. The help output is fully tested for accuracy and completeness.
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T01:49:32.363Z-eca1ca9e --end-->
@@ -691,8 +722,7 @@ Displays the current version of the extract-readmes CLI tool.
 <!-- reqt_README_field-->
 **README:**
 
-@TODO: Create readme section after the implementation is finalized.
-
+The `--version` (or `-v`) option prints the current version of the extract-readmes CLI, as specified in the project's `package.json`. The output is a single line, making it suitable for use in scripts or automation. If the version cannot be determined (for example, due to a missing or malformed `package.json`), the CLI displays a clear error message and exits with a non-zero status code. This feature is fully tested for both normal and error scenarios.
 <!-- Make Content "exclude" to exclude from README generation -->
 ---
 <!-- reqt_id: 2025-06-06T01:49:38.393Z-a4719bf5 --end-->
