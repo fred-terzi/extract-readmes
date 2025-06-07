@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command } from 'commander';
 import extractReadmes from '../core/extractReadmes.js';
 import findReadmes from '../core/findReadmes.js';

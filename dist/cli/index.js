@@ -12,8 +12,9 @@ import extractReadmes from '../core/extractReadmes.js';
 import findReadmes from '../core/findReadmes.js';
 import fs from 'fs-extra';
 import path from 'path';
-// Import package.json version using createRequire for compatibility with TypeScript
-import pkg from '../../package.json';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pkg = require('../../package.json');
 // CLI entry point and CLI-specific logic
 export default function cli() {
     return __awaiter(this, void 0, void 0, function* () {
