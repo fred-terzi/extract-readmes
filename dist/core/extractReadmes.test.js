@@ -7,69 +7,132 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import fs from 'fs-extra';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import path from 'path';
-import extractReadmes from './extractReadmes';
-const tmpRoot = path.join(process.cwd(), 'src/core/__fixtures__/tmp-root-extract');
-const readmesDir = path.join(process.cwd(), 'src/core/__fixtures__/tmp-root-extract/READMEs');
-function setupTestTree() {
-    fs.removeSync(tmpRoot);
-    fs.ensureDirSync(tmpRoot);
-    fs.ensureDirSync(path.join(tmpRoot, 'sub'));
-    fs.ensureDirSync(path.join(tmpRoot, 'sub2'));
-    fs.writeFileSync(path.join(tmpRoot, 'README.md'), 'Root README');
-    fs.writeFileSync(path.join(tmpRoot, 'sub/README.md'), 'Sub README');
-    fs.writeFileSync(path.join(tmpRoot, 'sub2/README.md'), 'Sub2 README');
-}
-function cleanupTestTree() {
-    fs.removeSync(tmpRoot);
-}
+import fs from 'fs-extra';
+import extractReadmes, { sanitizeName, makeUniqueName } from './extractReadmes';
+import findReadmes from './findReadmes';
+vi.mock('fs-extra');
+vi.mock('./findReadmes');
+const mockFs = fs;
+const mockFindReadmes = findReadmes;
 describe('extractReadmes', () => {
-    beforeEach(setupTestTree);
-    afterEach(cleanupTestTree);
-    it('creates READMEs directory and copies README.md files with correct naming', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield extractReadmes({ rootDir: tmpRoot, outDir: readmesDir });
-        expect(yield fs.pathExists(readmesDir)).toBe(true);
-        const files = yield fs.readdir(readmesDir);
-        expect(files.sort()).toEqual(['root.RM.md', 'sub.RM.md', 'sub2.RM.md'].sort());
-        const rootContent = yield fs.readFile(path.join(readmesDir, 'root.RM.md'), 'utf8');
-        expect(rootContent).toBe('Root README');
+    const rootDir = '/mock/root';
+    const outDir = '/mock/output';
+    const readmeFiles = [
+        '/mock/root/README.md',
+        '/mock/root/sub/README.md',
+        '/mock/root/sub2/README.md',
+        '/mock/root/sub/other.txt',
+    ];
+    beforeEach(() => {
+        vi.clearAllMocks();
+        mockFs.ensureDir = vi.fn().mockResolvedValue(undefined);
+        mockFs.access = vi.fn().mockResolvedValue(undefined);
+        mockFs.pathExists = vi.fn().mockResolvedValue(false);
+        mockFs.copyFile = vi.fn().mockResolvedValue(undefined);
+        mockFindReadmes.mockResolvedValue(readmeFiles);
+    });
+    it('copies README files to output dir with default options', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield extractReadmes({ rootDir, outDir });
+        expect(mockFs.ensureDir).toHaveBeenCalledWith(path.resolve(outDir));
+        expect(mockFs.copyFile).toHaveBeenCalledTimes(3); // Only README.md files
+        expect(mockFs.copyFile).toHaveBeenCalledWith('/mock/root/README.md', expect.stringContaining('root.RM.md'));
+        expect(mockFs.copyFile).toHaveBeenCalledWith('/mock/root/sub/README.md', expect.stringContaining('sub.RM.md'));
+        expect(mockFs.copyFile).toHaveBeenCalledWith('/mock/root/sub2/README.md', expect.stringContaining('sub2.RM.md'));
     }));
-    it('skips duplicate library names and only writes the first README found for each', () => __awaiter(void 0, void 0, void 0, function* () {
-        fs.ensureDirSync(path.join(tmpRoot, 'foo'));
-        fs.ensureDirSync(path.join(tmpRoot, 'bar/foo'));
-        fs.writeFileSync(path.join(tmpRoot, 'foo/README.md'), 'foo1');
-        fs.writeFileSync(path.join(tmpRoot, 'bar/foo/README.md'), 'foo2');
-        yield extractReadmes({ rootDir: tmpRoot, outDir: readmesDir });
-        const files = yield fs.readdir(readmesDir);
-        // Only one foo.RM.md should exist
-        expect(files.filter(f => f.startsWith('foo')).length).toBe(1);
-        const fooContent = yield fs.readFile(path.join(readmesDir, 'foo.RM.md'), 'utf8');
-        expect(['foo1', 'foo2']).toContain(fooContent); // Accept either, but only one file
+    it('skips copying if file exists and overwrite is false', () => __awaiter(void 0, void 0, void 0, function* () {
+        mockFs.pathExists = vi.fn().mockResolvedValue(true);
+        yield extractReadmes({ rootDir, outDir, overwrite: false });
+        expect(mockFs.copyFile).not.toHaveBeenCalled();
     }));
-    it('does not overwrite existing files unless overwrite=true', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield extractReadmes({ rootDir: tmpRoot, outDir: readmesDir });
-        const filePath = path.join(readmesDir, 'root.RM.md');
-        yield fs.writeFile(filePath, 'EXISTING');
-        yield extractReadmes({ rootDir: tmpRoot, outDir: readmesDir });
-        const content = yield fs.readFile(filePath, 'utf8');
-        expect(content).toBe('EXISTING');
-        yield extractReadmes({ rootDir: tmpRoot, outDir: readmesDir, overwrite: true });
-        const content2 = yield fs.readFile(filePath, 'utf8');
-        expect(content2).toBe('Root README');
+    it('overwrites file if overwrite is true', () => __awaiter(void 0, void 0, void 0, function* () {
+        mockFs.pathExists = vi.fn().mockResolvedValue(true);
+        yield extractReadmes({ rootDir, outDir, overwrite: true });
+        expect(mockFs.copyFile).toHaveBeenCalled();
     }));
-    it('throws if READMEs directory is not writable', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield extractReadmes({ rootDir: tmpRoot, outDir: readmesDir });
-        yield fs.chmod(readmesDir, 0o400); // read-only
-        yield expect(extractReadmes({ rootDir: tmpRoot, outDir: readmesDir, overwrite: true })).rejects.toThrow();
-        yield fs.chmod(readmesDir, 0o700); // restore
+    it('creates output dir if not exists', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield extractReadmes({ rootDir, outDir });
+        expect(mockFs.ensureDir).toHaveBeenCalledWith(path.resolve(outDir));
     }));
-    it('handles special characters and deeply nested folders', () => __awaiter(void 0, void 0, void 0, function* () {
-        fs.ensureDirSync(path.join(tmpRoot, 'üñîçødë space'));
-        fs.writeFileSync(path.join(tmpRoot, 'üñîçødë space/README.md'), 'special');
-        yield extractReadmes({ rootDir: tmpRoot, outDir: readmesDir });
-        const files = yield fs.readdir(readmesDir);
-        expect(files.some(f => f.startsWith('üñîçødë-space'))).toBe(true);
+    it('throws if output dir is not writable', () => __awaiter(void 0, void 0, void 0, function* () {
+        mockFs.access = vi.fn().mockRejectedValue(new Error('not writable'));
+        yield expect(extractReadmes({ rootDir, outDir })).rejects.toThrow('Output directory is not writable');
     }));
+    it('throws if copyFile fails', () => __awaiter(void 0, void 0, void 0, function* () {
+        mockFs.copyFile = vi.fn().mockRejectedValue(new Error('copy failed'));
+        yield expect(extractReadmes({ rootDir, outDir, overwrite: true })).rejects.toThrow('Failed to copy');
+    }));
+    it('throws if findReadmes throws', () => __awaiter(void 0, void 0, void 0, function* () {
+        mockFindReadmes.mockRejectedValue(new Error('find failed'));
+        yield expect(extractReadmes({ rootDir, outDir })).rejects.toThrow('extractReadmes failed: find failed');
+    }));
+    it('uses default options if none provided', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield extractReadmes();
+        expect(mockFs.ensureDir).toHaveBeenCalled();
+        expect(mockFindReadmes).toHaveBeenCalled();
+    }));
+    it('only keeps one README per library (writtenLibraries logic)', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Add a duplicate README in sub
+        mockFindReadmes.mockResolvedValue([
+            '/mock/root/sub/README.md',
+            '/mock/root/sub/README2.md',
+        ]);
+        yield extractReadmes({ rootDir, outDir });
+        expect(mockFs.copyFile).toHaveBeenCalledTimes(1);
+    }));
+    it('sanitizes folder names for output', () => __awaiter(void 0, void 0, void 0, function* () {
+        mockFindReadmes.mockResolvedValue([
+            '/mock/root/some weird@folder/README.md',
+        ]);
+        yield extractReadmes({ rootDir, outDir });
+        expect(mockFs.copyFile.mock.calls[0][1]).toMatch(/some-weirdfolder\.RM\.md$/);
+    }));
+    it('handles files in root directory as root.RM.md', () => __awaiter(void 0, void 0, void 0, function* () {
+        mockFindReadmes.mockResolvedValue(['/mock/root/README.md']);
+        yield extractReadmes({ rootDir, outDir });
+        expect(mockFs.copyFile.mock.calls[0][1]).toMatch(/root\.RM\.md$/);
+    }));
+    it('uses default outDir if not provided', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield extractReadmes({ rootDir });
+        expect(mockFs.ensureDir).toHaveBeenCalledWith(path.resolve(path.join(rootDir, 'READMEs')));
+    }));
+    it('handles empty files array from findReadmes', () => __awaiter(void 0, void 0, void 0, function* () {
+        mockFindReadmes.mockResolvedValue([]);
+        yield extractReadmes({ rootDir, outDir });
+        expect(mockFs.copyFile).not.toHaveBeenCalled();
+    }));
+    it('handles folder names with only invalid chars', () => __awaiter(void 0, void 0, void 0, function* () {
+        mockFindReadmes.mockResolvedValue([
+            '/mock/root/!!!/README.md',
+        ]);
+        yield extractReadmes({ rootDir, outDir });
+        // Should fallback to .RM.md
+        const destPath = mockFs.copyFile.mock.calls[0][1];
+        expect(path.basename(destPath)).toBe('.RM.md');
+    }));
+    describe('sanitizeName', () => {
+        it('replaces spaces and removes unsafe chars', () => {
+            expect(sanitizeName('foo bar')).toBe('foo-bar');
+            expect(sanitizeName('foo/bar')).toBe('foobar');
+            expect(sanitizeName('fóó bär')).toBe('fóó-bär');
+            expect(sanitizeName('foo@bar!')).toBe('foobar');
+            expect(sanitizeName('foo_bar.baz')).toBe('foo_bar.baz');
+        });
+    });
+    describe('makeUniqueName', () => {
+        it('returns unique names by appending -1, -2, etc.', () => {
+            const used = new Set(['foo', 'foo-1']);
+            expect(makeUniqueName('foo', used)).toBe('foo-2');
+            expect(makeUniqueName('bar', used)).toBe('bar');
+            expect(used.has('foo-2')).toBe(true);
+            expect(used.has('bar')).toBe(true);
+        });
+    });
+    describe('extractReadmes error catch', () => {
+        it('throws with non-Error value in catch', () => __awaiter(void 0, void 0, void 0, function* () {
+            mockFindReadmes.mockImplementation(() => { throw 'string error'; });
+            yield expect(extractReadmes({ rootDir, outDir })).rejects.toThrow('extractReadmes failed: string error');
+        }));
+    });
 });

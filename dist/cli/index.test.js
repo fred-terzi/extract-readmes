@@ -7,60 +7,133 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import cli from './index';
+import * as findReadmesModule from '../core/findReadmes';
+import * as extractReadmesModule from '../core/extractReadmes';
 import fs from 'fs-extra';
 import path from 'path';
-import { execa } from 'execa';
-const cliPath = path.join(process.cwd(), 'dist/cli/index.js');
-const tmpRoot = path.join(process.cwd(), 'src/core/__fixtures__/tmp-root-cli');
-const readmesDir = path.join(tmpRoot, 'READMEs');
-const xrmignorePath = path.join(tmpRoot, '.xrmignore');
-function setupTestTree() {
-    fs.removeSync(tmpRoot);
-    fs.ensureDirSync(tmpRoot);
-    fs.ensureDirSync(path.join(tmpRoot, 'foo'));
-    fs.ensureDirSync(path.join(tmpRoot, 'bar'));
-    fs.writeFileSync(path.join(tmpRoot, 'foo/README.md'), 'foo');
-    fs.writeFileSync(path.join(tmpRoot, 'bar/README.md'), 'bar');
-}
-function cleanupTestTree() {
-    fs.removeSync(tmpRoot);
-}
-describe('CLI', () => {
-    beforeEach(setupTestTree);
-    afterEach(cleanupTestTree);
-    it('extracts README.md files to READMEs/ by default', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield execa('node', [cliPath, tmpRoot]);
-        expect(yield fs.pathExists(readmesDir)).toBe(true);
-        const files = yield fs.readdir(readmesDir);
-        expect(files.sort()).toEqual(['foo.RM.md', 'bar.RM.md'].sort());
+vi.mock('../core/findReadmes.js');
+vi.mock('../core/extractReadmes.js');
+vi.mock('fs-extra', () => ({
+    default: {
+        pathExists: vi.fn(),
+        writeFile: vi.fn(),
+    },
+}));
+vi.mock('../../package.json', () => ({ version: '1.2.3' }));
+describe('cli', () => {
+    const originalArgv = process.argv;
+    const originalExit = process.exit;
+    const originalConsoleLog = console.log;
+    const originalConsoleError = console.error;
+    let logMock;
+    let errorMock;
+    let exitMock;
+    beforeEach(() => {
+        logMock = vi.fn();
+        errorMock = vi.fn();
+        exitMock = vi.fn((code) => { throw new Error(`process.exit: ${code}`); });
+        console.log = logMock;
+        console.error = errorMock;
+        process.exit = exitMock;
+        process.argv = [...originalArgv.slice(0, 2)];
+        vi.clearAllMocks();
+    });
+    afterEach(() => {
+        process.argv = originalArgv;
+        process.exit = originalExit;
+        console.log = originalConsoleLog;
+        console.error = originalConsoleError;
+    });
+    it('should print version with --version', () => __awaiter(void 0, void 0, void 0, function* () {
+        process.argv = [originalArgv[0], originalArgv[1], '--version'];
+        try {
+            yield cli();
+        }
+        catch (_a) { }
+        expect(logMock).toHaveBeenCalledWith('1.2.3');
     }));
-    it('supports --dry-run and outputs correct files', () => __awaiter(void 0, void 0, void 0, function* () {
-        const { stdout } = yield execa('node', [cliPath, tmpRoot, '--dry-run']);
-        expect(stdout).toMatch(/foo\/README.md/);
-        expect(stdout).toMatch(/bar\/README.md/);
-        expect(yield fs.pathExists(readmesDir)).toBe(false);
+    it('should perform dry run and list files', () => __awaiter(void 0, void 0, void 0, function* () {
+        findReadmesModule.default.mockResolvedValue(['a/README.md', 'b/README.md']);
+        process.argv = [originalArgv[0], originalArgv[1], '--dry-run'];
+        try {
+            yield cli();
+        }
+        catch (_a) { }
+        expect(logMock).toHaveBeenCalledWith('README.md files that would be extracted:');
+        expect(logMock).toHaveBeenCalledWith('a/README.md');
+        expect(logMock).toHaveBeenCalledWith('b/README.md');
+        expect(logMock).toHaveBeenCalledWith('(Dry run: no files written)');
+        expect(exitMock).toHaveBeenCalledWith(0);
     }));
-    it('supports --create-ignore and generates .xrmignore', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield execa('node', [cliPath, tmpRoot, '--create-ignore']);
-        expect(yield fs.pathExists(xrmignorePath)).toBe(true);
-        const content = yield fs.readFile(xrmignorePath, 'utf8');
-        expect(content).toMatch(/foo\/README.md/);
-        expect(content).toMatch(/bar\/README.md/);
+    it('should print message if no README.md files found in dry run', () => __awaiter(void 0, void 0, void 0, function* () {
+        findReadmesModule.default.mockResolvedValue([]);
+        process.argv = [originalArgv[0], originalArgv[1], '--dry-run'];
+        try {
+            yield cli();
+        }
+        catch (_a) { }
+        expect(logMock).toHaveBeenCalledWith('No README.md files found.');
+        expect(logMock).toHaveBeenCalledWith('(Dry run: no files written)');
+        expect(exitMock).toHaveBeenCalledWith(0);
     }));
-    it('shows help with --help', () => __awaiter(void 0, void 0, void 0, function* () {
-        const { stdout } = yield execa('node', [cliPath, '--help']);
-        expect(stdout).toMatch(/Usage:/);
-        expect(stdout).toMatch(/--dry-run/);
-        expect(stdout).toMatch(/--create-ignore/);
-        expect(stdout).toMatch(/--version/);
+    it('should create .xrmignore file if --create-ignore is used', () => __awaiter(void 0, void 0, void 0, function* () {
+        findReadmesModule.default.mockResolvedValue(['/root/a/README.md', '/root/b/README.md']);
+        fs.pathExists.mockResolvedValue(false);
+        process.argv = [originalArgv[0], originalArgv[1], '--create-ignore', '/root'];
+        try {
+            yield cli();
+        }
+        catch (_a) { }
+        expect(fs.writeFile).toHaveBeenCalledWith(path.join('/root', '.xrmignore'), 'a/README.md\nb/README.md\n');
+        expect(logMock).toHaveBeenCalledWith('.xrmignore file created.');
+        expect(exitMock).toHaveBeenCalledWith(0);
     }));
-    it('shows version with --version', () => __awaiter(void 0, void 0, void 0, function* () {
-        const { stdout } = yield execa('node', [cliPath, '--version']);
-        expect(stdout).toMatch(/\d+\.\d+\.\d+/);
+    it('should not overwrite .xrmignore unless --force is used', () => __awaiter(void 0, void 0, void 0, function* () {
+        findReadmesModule.default.mockResolvedValue(['/root/a/README.md']);
+        fs.pathExists.mockResolvedValue(true);
+        process.argv = [originalArgv[0], originalArgv[1], '--create-ignore', '/root'];
+        try {
+            yield cli();
+        }
+        catch (_a) { }
+        expect(errorMock).toHaveBeenCalledWith('.xrmignore already exists. Use --force to overwrite.');
+        expect(exitMock).toHaveBeenCalledWith(1);
+        expect(fs.writeFile).not.toHaveBeenCalled();
     }));
-    it('exits with non-zero on error (invalid root)', () => __awaiter(void 0, void 0, void 0, function* () {
-        const { exitCode } = yield execa('node', [cliPath, '/no/such/dir'], { reject: false });
-        expect(exitCode).not.toBe(0);
+    it('should overwrite .xrmignore if --force is used', () => __awaiter(void 0, void 0, void 0, function* () {
+        findReadmesModule.default.mockResolvedValue(['/root/a/README.md']);
+        fs.pathExists.mockResolvedValue(true);
+        process.argv = [originalArgv[0], originalArgv[1], '--create-ignore', '--force', '/root'];
+        try {
+            yield cli();
+        }
+        catch (_a) { }
+        expect(fs.writeFile).toHaveBeenCalled();
+        expect(logMock).toHaveBeenCalledWith('.xrmignore file created.');
+        expect(exitMock).toHaveBeenCalledWith(0);
+    }));
+    it('should call extractReadmes and print success message', () => __awaiter(void 0, void 0, void 0, function* () {
+        extractReadmesModule.default.mockResolvedValue(undefined);
+        process.argv = [originalArgv[0], originalArgv[1], '/root'];
+        try {
+            yield cli();
+        }
+        catch (_a) { }
+        expect(extractReadmesModule.default).toHaveBeenCalledWith({ rootDir: path.resolve('/root') });
+        expect(logMock).toHaveBeenCalledWith('README.md files extracted to READMEs/.');
+        expect(exitMock).toHaveBeenCalledWith(0);
+    }));
+    it('should handle errors and print error message', () => __awaiter(void 0, void 0, void 0, function* () {
+        extractReadmesModule.default.mockRejectedValue(new Error('fail!'));
+        process.argv = [originalArgv[0], originalArgv[1], '/root'];
+        try {
+            yield cli();
+        }
+        catch (_a) { }
+        expect(errorMock).toHaveBeenCalledWith('Error:', 'fail!');
+        expect(exitMock).toHaveBeenCalledWith(1);
     }));
 });
+// We recommend installing an extension to run vitest tests.

@@ -55,4 +55,60 @@ describe('xrmignore', () => {
         expect(matcher(path.join(tmpRoot, 'foo/README.md'))).toBe(true);
         expect(matcher(path.join(tmpRoot, 'bar/README.md'))).toBe(true);
     }));
+    it('expands negated bare directory patterns (covers [line, !pattern/**])', () => __awaiter(void 0, void 0, void 0, function* () {
+        // This covers the ? [line, '!' + pattern + '/**'] branch in expandPatterns
+        const { matchXrmignore } = yield import('./xrmignore');
+        const matcher = yield matchXrmignore(tmpRoot, ['!foo']);
+        // Should include everything (negation means include foo and all under foo)
+        expect(matcher(path.join(tmpRoot, 'foo/README.md'))).toBe(true);
+        expect(matcher(path.join(tmpRoot, 'bar/README.md'))).toBe(true);
+    }));
+    it('expands non-negated bare directory patterns (covers [line, pattern/**])', () => __awaiter(void 0, void 0, void 0, function* () {
+        // This covers the [line, pattern + '/**'] branch in expandPatterns
+        const { matchXrmignore } = yield import('./xrmignore');
+        const matcher = yield matchXrmignore(tmpRoot, ['foo']);
+        // Should exclude foo and all under foo
+        expect(matcher(path.join(tmpRoot, 'foo/README.md'))).toBe(false);
+        expect(matcher(path.join(tmpRoot, 'bar/README.md'))).toBe(true);
+    }));
+    it('does not expand patterns with / or * (covers else branch in expandPatterns)', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Patterns with / or * should not be expanded, only match as written
+        const { matchXrmignore } = yield import('./xrmignore');
+        // Pattern with slash: only matches the exact path
+        let matcher = yield matchXrmignore(tmpRoot, ['foo/bar']);
+        expect(matcher(path.join(tmpRoot, 'foo/README.md'))).toBe(true); // not matched
+        // If we had a file exactly named foo/bar, it would be excluded
+        fs.writeFileSync(path.join(tmpRoot, 'foo/bar'), 'baz');
+        expect(matcher(path.join(tmpRoot, 'foo/bar'))).toBe(false); // matched
+        fs.unlinkSync(path.join(tmpRoot, 'foo/bar'));
+        // Pattern with *: matches foo/README.md, not bar/README.md
+        matcher = yield matchXrmignore(tmpRoot, ['foo/*']);
+        expect(matcher(path.join(tmpRoot, 'foo/README.md'))).toBe(false); // matched
+        expect(matcher(path.join(tmpRoot, 'bar/README.md'))).toBe(true); // not matched
+    }));
+    it('does not expand patterns with a dot (covers else branch in expandPatterns)', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Patterns with a dot should not be expanded
+        const { matchXrmignore } = yield import('./xrmignore');
+        // Non-negated with dot
+        let matcher = yield matchXrmignore(tmpRoot, ['foo.txt']);
+        // File does not exist, but should not match foo/README.md
+        expect(matcher(path.join(tmpRoot, 'foo/README.md'))).toBe(true); // not matched
+        // If we had a file exactly named foo.txt, it would be excluded
+        fs.writeFileSync(path.join(tmpRoot, 'foo.txt'), 'baz');
+        expect(matcher(path.join(tmpRoot, 'foo.txt'))).toBe(false); // matched
+        fs.unlinkSync(path.join(tmpRoot, 'foo.txt'));
+        // Negated with dot
+        matcher = yield matchXrmignore(tmpRoot, ['!foo.txt']);
+        expect(matcher(path.join(tmpRoot, 'foo/README.md'))).toBe(true); // not matched
+        fs.writeFileSync(path.join(tmpRoot, 'foo.txt'), 'baz');
+        expect(matcher(path.join(tmpRoot, 'foo.txt'))).toBe(true); // included
+        fs.unlinkSync(path.join(tmpRoot, 'foo.txt'));
+    }));
+    it('ignores empty lines and comments in expandPatterns (covers !line and # branch)', () => __awaiter(void 0, void 0, void 0, function* () {
+        const { matchXrmignore } = yield import('./xrmignore');
+        // Should ignore both empty and comment lines, only 'foo' is used
+        const matcher = yield matchXrmignore(tmpRoot, ['', '#comment', 'foo']);
+        expect(matcher(path.join(tmpRoot, 'foo/README.md'))).toBe(false);
+        expect(matcher(path.join(tmpRoot, 'bar/README.md'))).toBe(true);
+    }));
 });

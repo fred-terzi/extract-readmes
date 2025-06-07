@@ -62,7 +62,8 @@ export default function extractReadmes() {
             }
         }
         catch (err) {
-            throw new Error(`extractReadmes failed: ${err.message}`);
+            throw new Error(`extractReadmes failed: ${err instanceof Error ? err.message : String(err)}`);
         }
     });
 }
+export { sanitizeName, makeUniqueName };
