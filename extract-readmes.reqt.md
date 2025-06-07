@@ -28,6 +28,7 @@ Project Acceptance Criteria:
 
 **extract-readmes** (abbreviated as `xrm`) is a tool for extracting all `README.md` files from a codebase into a centralized `READMEs` directory. Each extracted README is renamed based on its source folder, with `.RM.md` appended. The tool supports ignoring specific folders or files using a `.xrmignore` file with `.gitignore`-style patterns. All core and CLI features are fully tested and designed for reliability and scalability in large projects.
 
+
 ## Installation
 
 You can install **extract-readmes** globally or as a dev dependency using npm:
@@ -43,8 +44,11 @@ npm install --save-dev extract-readmes
 To extract all `README.md` files from your project into a centralized `READMEs/` directory, run:
 
 ```sh
-xrm
+npx xrm
 ```
+**Example:**
+
+![example](.reqt/example.png "Example of extracted READMEs")
 
 **Common options:**
 
@@ -71,7 +75,7 @@ Contributions are welcome!
 
 Please start by opening an issue to request a feature or report a bug. For further details on contributing, please see our [Contributing Guide](CONTRIBUTING.md).
 
-[![Open Issues](https://img.shields.io/github/issues/fredrikaverpil/extract-readmes.svg)](https://github.com/fred-terzi/extract-readmes/issues)
+[![Issues](https://img.shields.io/github/issues/fred-terzi/extract-readmes.svg)](https://github.com/fred-terzi/extract-readmes/issues)
 [![Contributing Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](CONTRIBUTING.md)
 
 <!-- Make Content "exclude" to exclude from README generation -->

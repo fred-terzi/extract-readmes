@@ -7,7 +7,7 @@ We welcome contributions of all kinds, including bug reports, feature requests, 
 ## How to Contribute
 
 1. **Open an Issue First**
-   - Before submitting a pull request, please [open an issue](https://github.com/your-username/extract-readmes/issues) to request a new feature or report a bug.
+   - Before submitting a pull request, please [open an issue](https://github.com/fred-terzi/extract-readmes/issues) to request a new feature or report a bug.
    - This helps us discuss your idea, avoid duplicate work, and plan the best solution.
 
 2. **Fork the Repository**
